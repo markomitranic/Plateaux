@@ -1,0 +1,22 @@
+{
+  "name": "plateaux",
+  "version": "1.0.0",
+  "description": "Multi-directional real-time creative collaboration platform based on WebSockets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markomitranic/Plateaux.git"
+  },
+  "author": "Marko Mitranić",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/markomitranic/Plateaux/issues"
+  },
+  "homepage": "https://github.com/markomitranic/Plateaux#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
