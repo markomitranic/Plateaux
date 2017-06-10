@@ -14224,6 +14224,201 @@ Object.defineProperties( THREE.OrbitControls.prototype, {
     Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
+/*
+ * @author zz85 / https://github.com/zz85
+ * @author mrdoob / http://mrdoob.com
+ * Running this will allow you to drag three.js objects around the screen.
+ */
+
+THREE.DragControls = function ( _objects, _camera, _domElement ) {
+
+    if ( _objects instanceof THREE.Camera ) {
+
+        console.warn( 'THREE.DragControls: Constructor now expects ( objects, camera, domElement )' );
+        var temp = _objects; _objects = _camera; _camera = temp;
+
+    }
+
+    var _plane = new THREE.Plane();
+    var _raycaster = new THREE.Raycaster();
+
+    var _mouse = new THREE.Vector2();
+    var _offset = new THREE.Vector3();
+    var _intersection = new THREE.Vector3();
+
+    var _selected = null, _hovered = null;
+
+    //
+
+    var scope = this;
+
+    function activate() {
+
+        _domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        _domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+        _domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
+
+    }
+
+    function deactivate() {
+
+        _domElement.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+        _domElement.removeEventListener( 'mousedown', onDocumentMouseDown, false );
+        _domElement.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+
+    }
+
+    function dispose() {
+
+        deactivate();
+
+    }
+
+    function onDocumentMouseMove( event ) {
+
+        event.preventDefault();
+
+        var rect = _domElement.getBoundingClientRect();
+
+        _mouse.x = ( (event.clientX - rect.left) / rect.width ) * 2 - 1;
+        _mouse.y = - ( (event.clientY - rect.top) / rect.height ) * 2 + 1;
+
+        _raycaster.setFromCamera( _mouse, _camera );
+
+        if ( _selected && scope.enabled ) {
+
+            if ( _raycaster.ray.intersectPlane( _plane, _intersection ) ) {
+
+                _selected.position.copy( _intersection.sub( _offset ) );
+
+            }
+
+            scope.dispatchEvent( { type: 'drag', object: _selected } );
+
+            return;
+
+        }
+
+        _raycaster.setFromCamera( _mouse, _camera );
+
+        var intersects = _raycaster.intersectObjects( _objects );
+
+        if ( intersects.length > 0 ) {
+
+            var object = intersects[ 0 ].object;
+
+            _plane.setFromNormalAndCoplanarPoint( _camera.getWorldDirection( _plane.normal ), object.position );
+
+            if ( _hovered !== object ) {
+
+                scope.dispatchEvent( { type: 'hoveron', object: object } );
+
+                _domElement.style.cursor = 'pointer';
+                _hovered = object;
+
+            }
+
+        } else {
+
+            if ( _hovered !== null ) {
+
+                scope.dispatchEvent( { type: 'hoveroff', object: _hovered } );
+
+                _domElement.style.cursor = 'auto';
+                _hovered = null;
+
+            }
+
+        }
+
+    }
+
+    function onDocumentMouseDown( event ) {
+
+        event.preventDefault();
+
+        _raycaster.setFromCamera( _mouse, _camera );
+
+        var intersects = _raycaster.intersectObjects( _objects );
+
+        if ( intersects.length > 0 ) {
+
+            _selected = intersects[ 0 ].object;
+
+            if ( _raycaster.ray.intersectPlane( _plane, _intersection ) ) {
+
+                _offset.copy( _intersection ).sub( _selected.position );
+
+            }
+
+            _domElement.style.cursor = 'move';
+
+            scope.dispatchEvent( { type: 'dragstart', object: _selected } );
+
+        }
+
+
+    }
+
+    function onDocumentMouseUp( event ) {
+
+        event.preventDefault();
+
+        if ( _selected ) {
+
+            scope.dispatchEvent( { type: 'dragend', object: _selected } );
+
+            _selected = null;
+
+        }
+
+        _domElement.style.cursor = 'auto';
+
+    }
+
+    activate();
+
+    // API
+
+    this.enabled = true;
+
+    this.activate = activate;
+    this.deactivate = deactivate;
+    this.dispose = dispose;
+
+    // Backward compatibility
+
+    this.setObjects = function () {
+
+        console.error( 'THREE.DragControls: setObjects() has been removed.' );
+
+    };
+
+    this.on = function ( type, listener ) {
+
+        console.warn( 'THREE.DragControls: on() has been deprecated. Use addEventListener() instead.' );
+        scope.addEventListener( type, listener );
+
+    };
+
+    this.off = function ( type, listener ) {
+
+        console.warn( 'THREE.DragControls: off() has been deprecated. Use removeEventListener() instead.' );
+        scope.removeEventListener( type, listener );
+
+    };
+
+    this.notify = function ( type ) {
+
+        console.error( 'THREE.DragControls: notify() has been deprecated. Use dispatchEvent() instead.' );
+        scope.dispatchEvent( { type: type } );
+
+    };
+
+};
+
+THREE.DragControls.prototype = Object.create( THREE.EventDispatcher.prototype );
+THREE.DragControls.prototype.constructor = THREE.DragControls;
 // three var
 var camera, scene, light, renderer, canvas, controls;
 var meshs = [];
@@ -14292,17 +14487,52 @@ function init() {
 
     // materials
     var materialType = 'MeshPhongMaterial';
-    mats['sph']    = new THREE[materialType]( {shininess: 10, map: basicTexture(0), name:'sph' } );
-    mats['box']    = new THREE[materialType]( {shininess: 10, map: basicTexture(2), name:'box' } );
-    mats['cyl']    = new THREE[materialType]( {shininess: 10, map: basicTexture(4), name:'cyl' } );
+    mats['sph']    = new THREE[materialType]( {shininess: 10, map: basicTexture(0), name:'sph', emissive: 0x787878, specular: 0x434343 } );
+    mats['box']    = new THREE[materialType]( {shininess: 10, map: basicTexture(2), name:'box', emissive: 0x787878, specular: 0x434343  } );
     mats['ssph']   = new THREE[materialType]( {shininess: 10, map: basicTexture(1), name:'ssph' } );
     mats['sbox']   = new THREE[materialType]( {shininess: 10, map: basicTexture(3), name:'sbox' } );
-    mats['scyl']   = new THREE[materialType]( {shininess: 10, map: basicTexture(5), name:'scyl' } );
     mats['ground'] = new THREE[materialType]( {shininess: 10, color:0x3D4143 } );
 
     window.addEventListener( 'resize', onWindowResize, false );
 
     initOimoPhysics();
+
+
+    var dragControls = new THREE.DragControls( meshs, camera, renderer.domElement );
+    dragControls.addEventListener( 'dragstart', function ( event ) {
+        controls.enabled = false;
+
+
+        meshs.forEach(function(mesh, i) {
+            if (mesh.uuid === event.object.uuid) {
+                var body = bodys[i];
+
+                meshPositionForOimo = {
+                    x:mesh.position.x * 0.01,
+                    y:mesh.position.y * 0.01,
+                    z:mesh.position.z * 0.01
+                }
+                body.position.copy(meshPositionForOimo);
+                body.position.copy(meshPositionForOimo);
+            }
+        });
+
+    });
+    dragControls.addEventListener( 'dragend', function ( event ) { controls.enabled = true;
+        meshs.forEach(function(mesh, i) {
+            if (mesh.uuid === event.object.uuid) {
+                var body = bodys[i];
+
+                meshPositionForOimo = {
+                    x:mesh.position.x * 0.01,
+                    y:mesh.position.y * 0.01,
+                    z:mesh.position.z * 0.01
+                }
+                body.position.copy(meshPositionForOimo);
+                body.position.copy(meshPositionForOimo);
+            }
+        });
+    } );
 }
 
 function loop() {
@@ -14318,6 +14548,7 @@ function onWindowResize() {
 }
 
 function initOimoPhysics(){
+
     world = new OIMO.World({
         worldscale:100,
         gravity: [0,-9.8,0]
@@ -14366,6 +14597,7 @@ function populate(gizmoType) {
     world.clear();
     createPlateau();
     createGizmos(max, gizmoType);
+
 }
 
 function createPlateau() {
@@ -14448,40 +14680,15 @@ function gradTexture(color) {
     return texture;
 }
 
-function basicTexture(n){
+function basicTexture(n) {
+    var cacheUrl = 'assets/texture-water.gif';
 
-
-
-    var cacheUrl = 'assets/texture-eye.jpg';
     var image = new Image();
     image.src = cacheUrl;
     var texture = new THREE.Texture(image);
     texture.needsUpdate = true;
+
     return texture;
-
-
-
-
-
-    var canvas = document.createElement( 'canvas' );
-    canvas.width = canvas.height = 64;
-    var ctx = canvas.getContext( '2d' );
-    var color;
-    if(n===0) color = "#3884AA";// sphere58AA80
-    if(n===1) color = "#61686B";// sphere sleep
-    if(n===2) color = "#AA6538";// box
-    if(n===3) color = "#61686B";// box sleep
-    if(n===4) color = "#AAAA38";// cyl
-    if(n===5) color = "#61686B";// cyl sleep
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, 64, 64);
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
-    ctx.fillRect(0, 0, 32, 32);
-    ctx.fillRect(32, 32, 32, 32);
-
-    var tx = new THREE.Texture(canvas);
-    tx.needsUpdate = true;
-    return tx;
 }
 // var socket = new WebSocket('ws://'+window.location.host+'/server');
 //

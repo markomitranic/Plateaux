@@ -13,38 +13,13 @@ function gradTexture(color) {
     return texture;
 }
 
-function basicTexture(n){
+function basicTexture(n) {
+    var cacheUrl = 'assets/texture-water.gif';
 
-
-
-    var cacheUrl = 'assets/texture-eye.jpg';
     var image = new Image();
     image.src = cacheUrl;
     var texture = new THREE.Texture(image);
     texture.needsUpdate = true;
+
     return texture;
-
-
-
-
-
-    var canvas = document.createElement( 'canvas' );
-    canvas.width = canvas.height = 64;
-    var ctx = canvas.getContext( '2d' );
-    var color;
-    if(n===0) color = "#3884AA";// sphere58AA80
-    if(n===1) color = "#61686B";// sphere sleep
-    if(n===2) color = "#AA6538";// box
-    if(n===3) color = "#61686B";// box sleep
-    if(n===4) color = "#AAAA38";// cyl
-    if(n===5) color = "#61686B";// cyl sleep
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, 64, 64);
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
-    ctx.fillRect(0, 0, 32, 32);
-    ctx.fillRect(32, 32, 32, 32);
-
-    var tx = new THREE.Texture(canvas);
-    tx.needsUpdate = true;
-    return tx;
 }

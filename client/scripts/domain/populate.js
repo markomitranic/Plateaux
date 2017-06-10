@@ -5,6 +5,7 @@ function populate(gizmoType) {
     world.clear();
     createPlateau();
     createGizmos(max, gizmoType);
+
 }
 
 function createPlateau() {

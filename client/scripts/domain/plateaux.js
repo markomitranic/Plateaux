@@ -66,17 +66,52 @@ function init() {
 
     // materials
     var materialType = 'MeshPhongMaterial';
-    mats['sph']    = new THREE[materialType]( {shininess: 10, map: basicTexture(0), name:'sph' } );
-    mats['box']    = new THREE[materialType]( {shininess: 10, map: basicTexture(2), name:'box' } );
-    mats['cyl']    = new THREE[materialType]( {shininess: 10, map: basicTexture(4), name:'cyl' } );
+    mats['sph']    = new THREE[materialType]( {shininess: 10, map: basicTexture(0), name:'sph', emissive: 0x787878, specular: 0x434343 } );
+    mats['box']    = new THREE[materialType]( {shininess: 10, map: basicTexture(2), name:'box', emissive: 0x787878, specular: 0x434343  } );
     mats['ssph']   = new THREE[materialType]( {shininess: 10, map: basicTexture(1), name:'ssph' } );
     mats['sbox']   = new THREE[materialType]( {shininess: 10, map: basicTexture(3), name:'sbox' } );
-    mats['scyl']   = new THREE[materialType]( {shininess: 10, map: basicTexture(5), name:'scyl' } );
     mats['ground'] = new THREE[materialType]( {shininess: 10, color:0x3D4143 } );
 
     window.addEventListener( 'resize', onWindowResize, false );
 
     initOimoPhysics();
+
+
+    var dragControls = new THREE.DragControls( meshs, camera, renderer.domElement );
+    dragControls.addEventListener( 'dragstart', function ( event ) {
+        controls.enabled = false;
+
+
+        meshs.forEach(function(mesh, i) {
+            if (mesh.uuid === event.object.uuid) {
+                var body = bodys[i];
+
+                meshPositionForOimo = {
+                    x:mesh.position.x * 0.01,
+                    y:mesh.position.y * 0.01,
+                    z:mesh.position.z * 0.01
+                }
+                body.position.copy(meshPositionForOimo);
+                body.position.copy(meshPositionForOimo);
+            }
+        });
+
+    });
+    dragControls.addEventListener( 'dragend', function ( event ) { controls.enabled = true;
+        meshs.forEach(function(mesh, i) {
+            if (mesh.uuid === event.object.uuid) {
+                var body = bodys[i];
+
+                meshPositionForOimo = {
+                    x:mesh.position.x * 0.01,
+                    y:mesh.position.y * 0.01,
+                    z:mesh.position.z * 0.01
+                }
+                body.position.copy(meshPositionForOimo);
+                body.position.copy(meshPositionForOimo);
+            }
+        });
+    } );
 }
 
 function loop() {
@@ -92,6 +127,7 @@ function onWindowResize() {
 }
 
 function initOimoPhysics(){
+
     world = new OIMO.World({
         worldscale:100,
         gravity: [0,-9.8,0]
