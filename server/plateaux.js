@@ -1,10 +1,13 @@
-const express = require('express')
-const app = express()
+const WebSocket = require('ws');
 
-app.get('/server', function (req, res) {
-    res.send('Hello World!')
-})
+const server = new WebSocket.Server({ port: 3000 });
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!')
-})
+server.on('connection', function connection(socket) {
+
+    socket.on('message', function incoming(message) {
+        console.log('Client: %s', message);
+    });
+
+    socket.send('Hello my dear client!');
+
+});
