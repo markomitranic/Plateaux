@@ -1,0 +1,21 @@
+{
+  "name": "plateaux-client",
+  "version": "1.0.0",
+  "description": "Multi-directional real-time creative collaboration platform based on WebSockets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marko Mitranic",
+  "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^2.12.5",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.1",
+    "gulp-sourcemaps": "^2.2.0",
+    "gulp-uglify": "^2.1.2"
+  }
+}
