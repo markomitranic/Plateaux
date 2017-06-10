@@ -1,8 +1,16 @@
 
 var scssInput = ['scss/style.scss'],
+    jsInput = [
+        'scripts/vendor/three.js',
+        'scripts/vendor/three.orbitControls.js',
+        'scripts/vendor/three.oimo.js',
+        'scripts/vendor/**/*.js',
+        'scripts/domain/plateaux.js',
+        'scripts/domain/**/*.js'
+    ],
     scssOutput = 'app/css',
-    jsInput = ['scripts/vendor/**/*.js', 'scripts/domain/**/*.js'],
     jsOutput = 'app/scripts';
+
 
 // Start everything up.
 var gulp = require('gulp');
