@@ -1,126 +1,275 @@
-// three var
-var camera, scene, light, renderer, canvas, controls;
-var meshs = [];
-var grounds = [];
+const radiusMin = 200, // Min radius of the asteroid belt.
+    radiusMax = 220, // Max radius of the asteroid belt.
+    particleCount = 11, // Ammount of asteroids.
+    particleMinRadius = 8, // Min of asteroid radius.
+    particleMaxRadius = 20, // Max of asteroid radius.
+    planetSize = 50; // Radius of planet.
 
-var antialias = true;
+const colors = {
+    green: 0x8fc999,
+    blue: 0x5fc4d0,
+    orange: 0xee5624,
+    yellow: 0xfaff70
+};
 
-var gizmos = {};
-var mats = {};
+const mouse = new WHS.VirtualMouseModule(world);
+const orbitControls = new WHS.OrbitControlsModule();
 
-//oimo var
-var world = null;
-var bodys = [];
+const world = new WHS.App([
+    new WHS.ElementModule(),
+    new WHS.SceneModule(),
+    new WHS.CameraModule({
+        position: new THREE.Vector3(0, 100, 400),
+        far: 2000,
+        near: 1
+    }),
+    new WHS.RenderingModule({
+        bgColor: 0x2a3340,
 
-var fps = [0,0,0,0];
-var ToRad = 0.0174532925199432957;
-var type = 1;
-
-init();
-loop();
-
-function init() {
-
-    var n = navigator.userAgent;
-
-    canvas = document.getElementById("canvas");
-
-    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
-    camera.position.set( 0, 160, 400 );
-
-    controls = new THREE.OrbitControls( camera, canvas );
-    controls.target.set(0, 20, 0);
-    controls.maxPolarAngle = Math.PI/2;
-    controls.minDistance = 1;
-    controls.maxDistance = 1000;
-    controls.update();
-
-    scene = new THREE.Scene();
-
-    renderer = new THREE.WebGLRenderer({ canvas:canvas, precision: "mediump", antialias:antialias });
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-    scene.add( new THREE.AmbientLight( 0x3D4143 ) );
-    light = new THREE.DirectionalLight( 0xffffff , 1.4);
-    light.position.set( 300, 1000, 500 );
-    light.target.position.set( 0, 0, 0 );
-    light.castShadow = true;
-    var d = 300;
-    light.shadow.camera = new THREE.OrthographicCamera( -d, d, d, -d,  500, 1600 );
-    light.shadow.bias = 0.0001;
-    light.shadow.mapSize.width = light.shadow.mapSize.height = 1024;
-    scene.add( light );
-
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap;//THREE.BasicShadowMap;
-
-    // background
-    var buffgeoBack = new THREE.BufferGeometry();
-    buffgeoBack.fromGeometry( new THREE.IcosahedronGeometry(3000,2) );
-    var back = new THREE.Mesh( buffgeoBack, new THREE.MeshBasicMaterial( { map:gradTexture([[0.75,0.6,0.4,0.25], ['#000682','#0006a8','#0006cb', '#0006ef']]), side:THREE.BackSide, depthWrite: false, fog:false }  ));
-    scene.add( back );
-
-    window.addEventListener( 'resize', onWindowResize, false );
-
-    initOimoPhysics();
-
-    var dragControls = new THREE.DragControls( meshs, camera, renderer.domElement );
-    dragControls.addEventListener('dragstart', dragStart);
-    dragControls.addEventListener('dragend', dragEnd);
-
-}
-
-function loop() {
-    updateOimoPhysics();
-    renderer.render( scene, camera );
-    requestAnimationFrame( loop );
-}
-
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-}
-
-function initOimoPhysics(){
-
-    world = new OIMO.World({
-        worldscale:100,
-        gravity: [0,-9.8,0]
-    } );
-    populate(2);
-}
-
-function updateOimoPhysics() {
-    if(world==null) return;
-
-    world.step();
-
-    var x, y, z, mesh, body, i = bodys.length;
-
-    while (i--){
-        body = bodys[i];
-        mesh = meshs[i];
-
-        if(!body.sleeping){
-
-            mesh.position.copy(body.getPosition());
-            mesh.quaternion.copy(body.getQuaternion());
-            
-            if(mesh.material.name === 'sbox') mesh.material = mats.box;
-            if(mesh.material.name === 'ssph') mesh.material = mats.sph;
-            if(mesh.material.name === 'scyl') mesh.material = mats.cyl;
-
-            if(mesh.position.y<-100){
-                x = -100 + Math.random()*200;
-                z = -100 + Math.random()*200;
-                y = 100 + Math.random()*1000;
-                body.resetPosition(x,y,z);
+        renderer: {
+            antialias: true,
+            shadowmap: {
+                type: THREE.PCFSoftShadowMap
             }
-        } else {
-            if(mesh.material.name === 'box') mesh.material = mats.sbox;
-            if(mesh.material.name === 'sph') mesh.material = mats.ssph;
-            if(mesh.material.name === 'cyl') mesh.material = mats.scyl;
         }
+    }),
+    orbitControls,
+    new WHS.ResizeModule(),
+    mouse
+]);
+
+orbitControls.controls.enabled = false;
+orbitControls.controls.maxDistance = 800;
+orbitControls.controls.minDistance = 100;
+
+const space = new WHS.Group();
+space.addTo(world);
+space.rotation.z = Math.PI / 12;
+
+const planet = new WHS.Tetrahedron({
+    geometry: {
+        radius: planetSize,
+        detail: 2
+    },
+
+    material: new THREE.MeshStandardMaterial({
+        color: 0xee5624,
+        shading: THREE.FlatShading,
+        roughness: 0.9,
+        emissive: 0x270000
+    })
+});
+
+planet.addTo(space);
+mouse.track(planet);
+planet.on('mouseover', () => {
+    orbitControls.controls.enabled = true;
+});
+planet.on('mouseout', () => {
+    orbitControls.controls.enabled = false;
+});
+
+// LIGHTS.
+new WHS.AmbientLight({
+    light: {
+        color: 0x663344,
+        intensity: 2
     }
+}).addTo(world);
+
+new WHS.DirectionalLight({
+    light: {
+        color: 0xffffff,
+        intensity: 1.5,
+        distance: 800
+    },
+
+    shadowmap: {
+        width: 2048,
+        height: 2048,
+
+        left: -800,
+        right: 800,
+        top: 800,
+        bottom: -800,
+        far: 800
+    },
+
+    position: {
+        x: 300,
+        z: 300,
+        y: 100
+    }
+}).addTo(world);
+
+const dynamicGeometry = new WHS.DynamicGeometryModule();
+
+const s1 = new WHS.Dodecahedron({
+    geometry: {
+        buffer: true,
+        radius: 10
+    },
+
+    modules: [
+        dynamicGeometry
+    ],
+
+    material: new THREE.MeshStandardMaterial({
+        shading: THREE.FlatShading,
+        emissive: 0x270000,
+        roughness: 0.9
+    })
+});
+
+const s2 = new WHS.Box({
+    geometry: {
+        buffer: true,
+        width: 10,
+        height: 10,
+        depth: 10
+    },
+
+    modules: [
+        dynamicGeometry
+    ],
+
+    material: new THREE.MeshStandardMaterial({
+        shading: THREE.FlatShading,
+        roughness: 0.9,
+        emissive: 0x270000
+    })
+});
+
+const s3 = new WHS.Cylinder({
+    geometry: {
+        buffer: true,
+        radiusTop: 0,
+        radiusBottom: 10,
+        height: 10
+    },
+
+    modules: [
+        dynamicGeometry
+    ],
+
+    material: new THREE.MeshStandardMaterial({
+        shading: THREE.FlatShading,
+        roughness: 0.9,
+        emissive: 0x270000
+    })
+});
+
+const s4 = new WHS.Sphere({
+    geometry: {
+        buffer: true,
+        radius: 10
+    },
+
+    modules: [
+        dynamicGeometry
+    ],
+
+    material: new THREE.MeshStandardMaterial({
+        shading: THREE.FlatShading,
+        roughness: 0.9,
+        emissive: 0x270000
+    })
+});
+
+const asteroids = new WHS.Group();
+asteroids.addTo(space);
+
+// Materials.
+const mat = [
+    new THREE.MeshPhongMaterial({color: colors.green, shading: THREE.FlatShading}),
+    new THREE.MeshPhongMaterial({color: colors.blue, shading: THREE.FlatShading}),
+    new THREE.MeshPhongMaterial({color: colors.orange, shading: THREE.FlatShading}),
+    new THREE.MeshPhongMaterial({color: colors.yellow, shading: THREE.FlatShading})
+];
+
+for (let i = 0; i < particleCount; i++) {
+    const particle = [s1, s2, s3, s4][Math.ceil(Math.random() * 3)].clone(),
+        radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
+
+    particle.g_({
+        radiusBottom: radius,
+        radiusTop: 0,
+        height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
+        width: radius,
+        depth: radius,
+        radius
+    });
+
+    particle.material = mat[Math.floor(4 * Math.random())]; // Set custom THREE.Material to mesh.
+    particle.material.map = WHS.TextureModule.load(`assets/spider.png`);
+
+    // Particle data.
+    particle.data = {
+        distance: radiusMin + Math.random() * (radiusMax - radiusMin),
+        angle: Math.random() * Math.PI * 2
+    };
+
+    // Set position & rotation.
+    particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
+    particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
+    particle.position.y = -10 * Math.random() + 4;
+
+    particle.rotation.set(Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random());
+
+    particle.addTo(asteroids);
+}
+
+// Animating rotating shapes around planet.
+const particles = asteroids.children;
+
+const animation = new WHS.Loop(() => {
+    for (let i = 0, max = particles.length; i < max; i++) {
+        const particle = particles[i];
+
+        particle.data.angle += 0.005 * particle.data.distance / radiusMax;
+
+        particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
+        particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
+
+        particle.rotation.x += Math.PI / 60;
+        particle.rotation.y += Math.PI / 60;
+    }
+
+    planet.rotation.y += 0.005;
+});
+
+world.addLoop(animation);
+
+animation.start();
+
+// Start rendering.
+world.start();
+
+let selectedGizmo;
+
+for (let i = 0, max = particles.length; i < max; i++) {
+    const particle = particles[i];
+    mouse.track(particle);
+
+    particle.on('dragstart', () => {
+        console.log('mousemove');
+    });
+
+    particle.on('dragstop', () => {
+        sphere.material.color.set(UTILS.$colors.mesh);
+        console.log('mouseout');
+    });
+
+    particle.on('mousedown', (e) => {
+        selectedGizmo = particle.clone();
+        world.add(selectedGizmo);
+        mouse.on('move', () => {
+            selectedGizmo.position.copy(mouse.project());
+        });
+    });
+
+    world.on('mouseup', (e) => {
+        world.remove(selectedGizmo);
+    });
+
 }

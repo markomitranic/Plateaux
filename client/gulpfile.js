@@ -1,15 +1,18 @@
 
 var scssInput = ['scss/style.scss'],
     jsInput = [
-        'scripts/vendor/three.js',
-        'scripts/vendor/three.orbitControls.js',
-        'scripts/vendor/three.oimo.js',
-        'scripts/vendor/**/*.js',
-        'scripts/domain/plateaux.js',
+        'scripts/domain/scene.js',
         'scripts/domain/**/*.js'
+    ],
+    vendorInput = [
+        'scripts/vendor/three.min.js',
+        'scripts/vendor/whitestorm.min.js',
+        'scripts/vendor/whitestorm.physics.min.js',
+        'scripts/vendor/**/*.js'
     ],
     scssOutput = 'app/css',
     jsOutput = 'app/scripts';
+
 
 
 // Start everything up.
@@ -17,6 +20,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var sourcemaps = require('gulp-sourcemaps');
+const babel = require('gulp-babel');
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
@@ -33,18 +37,29 @@ gulp.task('sass', function() {
         .pipe(gulp.dest(scssOutput))
 });
 
-gulp.task('scripts', function() {
+gulp.task('domainScripts', function() {
     return gulp.src(jsInput)
         .pipe(sourcemaps.init())
+        .pipe(babel({
+            presets: ['env']
+        }))
         .pipe(concat('scripts.js'))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(jsOutput))
-        .pipe(rename('scripts.min.js'))
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
+        // .pipe(rename('scripts.min.js'))
+        // .pipe(uglify())
+        // .pipe(gulp.dest(jsOutput));
+});
+
+gulp.task('vendorScripts', function() {
+    return gulp.src(vendorInput)
+        .pipe(concat('vendor.js'))
         .pipe(gulp.dest(jsOutput));
 });
 
-gulp.task('watch', ['sass', 'scripts'], function (){
+gulp.task('watch', ['sass', 'domainScripts', 'vendorScripts'], function (){
     gulp.watch('scss/**/*.scss', ['sass']);
-    gulp.watch('scripts/**/*.js', ['scripts']);
+    gulp.watch('scripts/domain/**/*.js', ['domainScripts']);
+    gulp.watch('scripts/vendor/**/*.js', ['vendorScripts']);
 });
+
