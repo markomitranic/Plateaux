@@ -1,4 +1,17 @@
 function populate(gizmoType) {
+
+    // geometrys
+    gizmos['sphere'] = new THREE.BufferGeometry().fromGeometry( new THREE.SphereGeometry(1,16,10));
+    gizmos['box'] = new THREE.BufferGeometry().fromGeometry( new THREE.BoxGeometry(1,1,1));
+
+    // materials
+    var materialType = 'MeshPhongMaterial';
+    mats['sph']    = new THREE[materialType]( {shininess: 10, map: basicTexture(0), name:'sph', emissive: 0x787878, specular: 0x434343 } );
+    mats['box']    = new THREE[materialType]( {shininess: 10, map: basicTexture(2), name:'box', emissive: 0x787878, specular: 0x434343  } );
+    mats['ssph']   = new THREE[materialType]( {shininess: 10, map: basicTexture(1), name:'ssph' } );
+    mats['sbox']   = new THREE[materialType]( {shininess: 10, map: basicTexture(3), name:'sbox' } );
+    mats['ground'] = new THREE[materialType]( {shininess: 10, color:0x3D4143 } );
+
     var max = 11;
 
     clearMesh();
@@ -37,8 +50,7 @@ function createGizmos(max, gizmoType) {
     var i = max;
 
     while (i--){
-        if(type===4) t = Math.floor(Math.random()*3)+1;
-        else t = type;
+        t = type;
         x = -100 + Math.random()*200;
         z = -100 + Math.random()*200;
         y = 100 + Math.random()*1000;

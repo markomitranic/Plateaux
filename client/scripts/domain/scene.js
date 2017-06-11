@@ -32,7 +32,7 @@ function init() {
     controls.target.set(0, 20, 0);
     controls.maxPolarAngle = Math.PI/2;
     controls.minDistance = 1;
-    controls.maxDistance = 400;
+    controls.maxDistance = 1000;
     controls.update();
 
     scene = new THREE.Scene();
@@ -60,58 +60,14 @@ function init() {
     var back = new THREE.Mesh( buffgeoBack, new THREE.MeshBasicMaterial( { map:gradTexture([[0.75,0.6,0.4,0.25], ['#000682','#0006a8','#0006cb', '#0006ef']]), side:THREE.BackSide, depthWrite: false, fog:false }  ));
     scene.add( back );
 
-    // geometrys
-    gizmos['sphere'] = new THREE.BufferGeometry().fromGeometry( new THREE.SphereGeometry(1,16,10));
-    gizmos['box'] = new THREE.BufferGeometry().fromGeometry( new THREE.BoxGeometry(1,1,1));
-
-    // materials
-    var materialType = 'MeshPhongMaterial';
-    mats['sph']    = new THREE[materialType]( {shininess: 10, map: basicTexture(0), name:'sph', emissive: 0x787878, specular: 0x434343 } );
-    mats['box']    = new THREE[materialType]( {shininess: 10, map: basicTexture(2), name:'box', emissive: 0x787878, specular: 0x434343  } );
-    mats['ssph']   = new THREE[materialType]( {shininess: 10, map: basicTexture(1), name:'ssph' } );
-    mats['sbox']   = new THREE[materialType]( {shininess: 10, map: basicTexture(3), name:'sbox' } );
-    mats['ground'] = new THREE[materialType]( {shininess: 10, color:0x3D4143 } );
-
     window.addEventListener( 'resize', onWindowResize, false );
 
     initOimoPhysics();
 
-
     var dragControls = new THREE.DragControls( meshs, camera, renderer.domElement );
-    dragControls.addEventListener( 'dragstart', function ( event ) {
-        controls.enabled = false;
+    dragControls.addEventListener('dragstart', dragStart);
+    dragControls.addEventListener('dragend', dragEnd);
 
-
-        meshs.forEach(function(mesh, i) {
-            if (mesh.uuid === event.object.uuid) {
-                var body = bodys[i];
-
-                meshPositionForOimo = {
-                    x:mesh.position.x * 0.01,
-                    y:mesh.position.y * 0.01,
-                    z:mesh.position.z * 0.01
-                }
-                body.position.copy(meshPositionForOimo);
-                body.position.copy(meshPositionForOimo);
-            }
-        });
-
-    });
-    dragControls.addEventListener( 'dragend', function ( event ) { controls.enabled = true;
-        meshs.forEach(function(mesh, i) {
-            if (mesh.uuid === event.object.uuid) {
-                var body = bodys[i];
-
-                meshPositionForOimo = {
-                    x:mesh.position.x * 0.01,
-                    y:mesh.position.y * 0.01,
-                    z:mesh.position.z * 0.01
-                }
-                body.position.copy(meshPositionForOimo);
-                body.position.copy(meshPositionForOimo);
-            }
-        });
-    } );
 }
 
 function loop() {
@@ -132,7 +88,7 @@ function initOimoPhysics(){
         worldscale:100,
         gravity: [0,-9.8,0]
     } );
-    populate(1);
+    populate(2);
 }
 
 function updateOimoPhysics() {
@@ -150,7 +106,7 @@ function updateOimoPhysics() {
 
             mesh.position.copy(body.getPosition());
             mesh.quaternion.copy(body.getQuaternion());
-
+            
             if(mesh.material.name === 'sbox') mesh.material = mats.box;
             if(mesh.material.name === 'ssph') mesh.material = mats.sph;
             if(mesh.material.name === 'scyl') mesh.material = mats.cyl;
