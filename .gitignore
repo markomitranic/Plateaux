@@ -1,3 +1,9 @@
+client/app/scripts/*
+client/app/css/*
+
+
+
+
 # Logs
 logs
 *.log
