@@ -245,8 +245,6 @@ animation.start();
 // Start rendering.
 world.start();
 
-let selectedGizmo;
-
 for (let i = 0, max = particles.length; i < max; i++) {
     const particle = particles[i];
     mouse.track(particle);
@@ -261,15 +259,13 @@ for (let i = 0, max = particles.length; i < max; i++) {
     });
 
     particle.on('mousedown', (e) => {
-        selectedGizmo = particle.clone();
-        world.add(selectedGizmo);
         mouse.on('move', () => {
-            selectedGizmo.position.copy(mouse.project());
+            particle.position.copy(mouse.project());
         });
     });
 
-    world.on('mouseup', (e) => {
-        world.remove(selectedGizmo);
+    particle.on('mouseup', (e) => {
+        mouse.off('move');
     });
 
 }
