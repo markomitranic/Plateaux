@@ -223,14 +223,12 @@ for (let i = 0; i < particleCount; i++) {
 
     particle.addTo(asteroids);
 }
-
-// Animating rotating shapes around planet.
 const particles = asteroids.children;
 
+// Animating rotating shapes around planet.
 const animation = new WHS.Loop(() => {
     for (let i = 0, max = particles.length; i < max; i++) {
         const particle = particles[i];
-
 
         if (particle.status.isHold) {
             particle.position.copy(mouse.project());
@@ -239,61 +237,25 @@ const animation = new WHS.Loop(() => {
             particle.rotation.y += Math.PI / 60;
         } else {
             particle.data.angle += 0.005 * particle.data.distance / radiusMax;
-
             particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
             particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
-
             particle.rotation.x += Math.PI / 60;
             particle.rotation.y += Math.PI / 60;
         }
     }
+});
+world.addLoop(animation);
+animation.start();
 
+
+const animations = {};
+
+animations.planet = new WHS.Loop(() => {
     planet.rotation.y += 0.005;
 });
+world.addLoop(animations.planet);
+animations.planet.start();
 
-world.addLoop(animation);
-
-animation.start();
 
 // Start rendering.
 world.start();
-
-
-
-let selectedParticle = null;
-
-for (let i = 0, max = particles.length; i < max; i++) {
-    const particle = particles[i];
-    mouse.track(particle);
-
-    particle.on('mousedown', () => {
-        particle.status.isHold = true;
-    });
-
-    particle.on('mouseup', () => {
-        particle.status.isHold = false;
-        particle.status.isLerping = true;
-
-        particle.status.lerpFrom = particle.position;
-        particle.status.lerpTo = new THREE.Vector3(
-            Math.cos(particle.data.angle) * particle.data.distance,
-            particle.position.y = -10 * Math.random() + 4,
-            Math.sin(particle.data.angle) * particle.data.distance,
-        );
-
-        const animationLoop = new WHS.Loop((clock) => {
-
-            let i = clock.getElapsedTime() / 5;
-
-            let lerpBy = particle.status.lerpFrom.lerp(particle.status.lerpTo, i);
-
-            particle.position = lerpBy;
-
-            if (clock.getElapsedTime() > 1) {
-                animationLoop.stop(world);
-                particle.status.isLerping = false;
-            }
-        });
-        animationLoop.start(world);
-    });
-}
