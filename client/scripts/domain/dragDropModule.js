@@ -1,16 +1,16 @@
-for (let i = 0, max = particles.length; i < max; i++) {
-    const particle = particles[i];
-    mouse.track(particle);
+for (let i = 0, max = gizmos.children.length; i < max; i++) {
+    const gizmo = gizmos.children[i];
+    mouse.track(gizmo);
 
-    particle.on('mousedown', () => {
-        pickupGizmo(particle);
+    gizmo.on('mousedown', () => {
+        pickupGizmo(gizmo);
     });
 
-    particle.on('mouseup', () => {
+    gizmo.on('mouseup', () => {
         if (planet.isHover) {
-            putGizmoToSleep(particle);
+            putGizmoToSleep(gizmo);
         } else {
-            lerpGizmoToOrbit(particle);
+            lerpGizmoToOrbit(gizmo);
         }
     });
 }

@@ -1,88 +1,84 @@
-// export class Gizmo extends WHS.MeshComponent {
-//     build() {
-//         return new THREE.Mesh(
-//             new THREE.IcosahedronGeometry(3, 5),
-//             new THREE.MeshBasicMaterial({color: 0xffffff})
-//         )
-//     }
-//
-//     randomize() { // Additional function
-//         this.position.set(Math.random() * 10, Math.random() * 10, Math.random() * 10);
-//     }
-// }
+const gizmos = new WHS.Group();
+gizmos.addTo(space);
 
+// Create Gizmos
+newGizmo(s1, mat[1]);
+newGizmo(s2, mat[2]);
+newGizmo(s3, mat[3]);
+newGizmo(s4, mat[0]);
+newGizmo(s3, mat[2]);
+newGizmo(s1, mat[2]);
+newGizmo(s2, mat[3]);
+newGizmo(s1, mat[2]);
+newGizmo(s3, mat[1]);
+newGizmo(s4, mat[0]);
+newGizmo(s4, mat[0]);
 
-const s1 = new WHS.Dodecahedron({
-    geometry: {
-        buffer: true,
-        radius: 10
-    },
+// Animating rotating shapes around planet.
+const animation = new WHS.Loop(() => {
+    for (let i = 0, max = gizmos.children.length; i < max; i++) {
+        const particle = gizmos.children[i];
 
-    modules: [
-        dynamicGeometry
-    ],
+        if (particle.status.isHold) {
+            particle.position.copy(mouse.project());
+        } else if (particle.status.isLerping) {
+            particle.rotation.x += Math.PI / 60;
+            particle.rotation.y += Math.PI / 60;
+        } else if (particle.status.isSleeping) {
 
-    material: new THREE.MeshStandardMaterial({
-        shading: THREE.FlatShading,
-        emissive: 0x270000,
-        roughness: 0.9
-    })
+        } else {
+            particle.data.angle += 0.005 * particle.data.distance / radiusMax;
+            particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
+            particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
+            particle.rotation.x += Math.PI / 120;
+            particle.rotation.y += Math.PI / 120;
+        }
+    }
 });
+world.addLoop(animation);
+animation.start();
 
-const s2 = new WHS.Box({
-    geometry: {
-        buffer: true,
-        width: 10,
-        height: 10,
-        depth: 10
-    },
+function newGizmo (mesh, material) {
+    const radiusMin = 200, // Min radius of the asteroid belt.
+        radiusMax = 220, // Max radius of the asteroid belt.
+        particleMinRadius = 8, // Min of asteroid radius.
+        particleMaxRadius = 20; // Max of asteroid radius.
 
-    modules: [
-        dynamicGeometry
-    ],
+    const particle = mesh.clone();
+    const radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
 
-    material: new THREE.MeshStandardMaterial({
-        shading: THREE.FlatShading,
-        roughness: 0.9,
-        emissive: 0x270000
-    })
-});
-
-const s3 = new WHS.Cylinder({
-    geometry: {
-        buffer: true,
+    particle.g_({
+        radiusBottom: radius,
         radiusTop: 0,
-        radiusBottom: 10,
-        height: 10
-    },
+        height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
+        width: radius,
+        depth: radius,
+        radius
+    });
 
-    modules: [
-        dynamicGeometry
-    ],
+    particle.material = material.clone();
+    particle.material.map = WHS.TextureModule.load(`assets/spider.png`);
 
-    material: new THREE.MeshStandardMaterial({
-        shading: THREE.FlatShading,
-        roughness: 0.9,
-        emissive: 0x270000
-    })
-});
+    particle.data = {
+        distance: radiusMin + Math.random() * (radiusMax - radiusMin),
+        angle: Math.random() * Math.PI * 2
+    };
 
-const s4 = new WHS.Sphere({
-    geometry: {
-        buffer: true,
-        radius: 10
-    },
+    // Set position & rotation.
+    particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
+    particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
+    particle.position.y = -10 * Math.random() + 4;
+    particle.status = {
+        isHold: false,
+        isLerping: false,
+        isSleeping: false
+    };
+    particle.rotation.set(Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random());
 
-    modules: [
-        dynamicGeometry
-    ],
+    // Add to group
+    particle.addTo(gizmos);
+}
 
-    material: new THREE.MeshStandardMaterial({
-        shading: THREE.FlatShading,
-        roughness: 0.9,
-        emissive: 0x270000
-    })
-});
 
-const asteroids = new WHS.Group();
-asteroids.addTo(space);
+
+

@@ -1,16 +1,9 @@
-const radiusMin = 200, // Min radius of the asteroid belt.
-    radiusMax = 220, // Max radius of the asteroid belt.
-    particleCount = 11, // Ammount of asteroids.
-    particleMinRadius = 8, // Min of asteroid radius.
-    particleMaxRadius = 20, // Max of asteroid radius.
+const radiusMin = 180, // Min radius of the asteroid belt.
+    radiusMax = 240, // Max radius of the asteroid belt.
+    particleCount = 100, // Ammount of asteroids.
+    particleMinRadius = 0.1, // Min of asteroid radius.
+    particleMaxRadius = 4, // Max of asteroid radius.
     planetSize = 50; // Radius of planet.
-
-const colors = {
-    green: 0x8fc999,
-    blue: 0x5fc4d0,
-    orange: 0xee5624,
-    yellow: 0xfaff70
-};
 
 const mouse = new WHS.VirtualMouseModule(world);
 const dynamicGeometry = new WHS.DynamicGeometryModule();

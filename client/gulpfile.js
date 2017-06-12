@@ -5,6 +5,7 @@ var scssInput = ['scss/style.scss'],
         'scripts/domain/planetModule.js',
         'scripts/domain/materialsModule.js',
         'scripts/domain/gizmoModule.js',
+        'scripts/domain/asteroidsModule.js',
         'scripts/domain/populateModule.js',
         'scripts/domain/**/*.js'
     ],
