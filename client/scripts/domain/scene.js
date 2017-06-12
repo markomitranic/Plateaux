@@ -61,13 +61,17 @@ const planet = new WHS.Tetrahedron({
     })
 });
 
+planet.isHover = false;
 planet.addTo(space);
+
 mouse.track(planet);
 planet.on('mouseover', () => {
     orbitControls.controls.enabled = true;
+    planet.isHover = true;
 });
 planet.on('mouseout', () => {
     orbitControls.controls.enabled = false;
+    planet.isHover = false;
 });
 
 // LIGHTS.
@@ -235,6 +239,8 @@ const animation = new WHS.Loop(() => {
         } else if (particle.status.isLerping) {
             particle.rotation.x += Math.PI / 60;
             particle.rotation.y += Math.PI / 60;
+        } else if (particle.status.isSleeping) {
+
         } else {
             particle.data.angle += 0.005 * particle.data.distance / radiusMax;
             particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
