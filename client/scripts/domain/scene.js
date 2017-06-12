@@ -14,25 +14,27 @@ const colors = {
 
 const mouse = new WHS.VirtualMouseModule(world);
 const orbitControls = new WHS.OrbitControlsModule();
+const camera = new WHS.CameraModule({
+        position: new THREE.Vector3(0, 100, 400),
+        far: 2000,
+        near: 1
+    });
+const renderer = new WHS.RenderingModule({
+    bgColor: 0x2a3340,
+
+    renderer: {
+        antialias: true,
+        shadowmap: {
+            type: THREE.PCFSoftShadowMap
+        }
+    }
+});
 
 const world = new WHS.App([
     new WHS.ElementModule(),
     new WHS.SceneModule(),
-    new WHS.CameraModule({
-        position: new THREE.Vector3(0, 100, 400),
-        far: 2000,
-        near: 1
-    }),
-    new WHS.RenderingModule({
-        bgColor: 0x2a3340,
-
-        renderer: {
-            antialias: true,
-            shadowmap: {
-                type: THREE.PCFSoftShadowMap
-            }
-        }
-    }),
+    camera,
+    renderer,
     orbitControls,
     new WHS.ResizeModule(),
     mouse
@@ -44,7 +46,6 @@ orbitControls.controls.minDistance = 100;
 
 const space = new WHS.Group();
 space.addTo(world);
-space.rotation.z = Math.PI / 12;
 
 const planet = new WHS.Tetrahedron({
     geometry: {
@@ -213,6 +214,10 @@ for (let i = 0; i < particleCount; i++) {
     particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
     particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
     particle.position.y = -10 * Math.random() + 4;
+    particle.status = {
+        isHold: false,
+        isLerping: false
+    };
 
     particle.rotation.set(Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random());
 
@@ -226,13 +231,21 @@ const animation = new WHS.Loop(() => {
     for (let i = 0, max = particles.length; i < max; i++) {
         const particle = particles[i];
 
-        particle.data.angle += 0.005 * particle.data.distance / radiusMax;
 
-        particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
-        particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
+        if (particle.status.isHold) {
+            particle.position.copy(mouse.project());
+        } else if (particle.status.isLerping) {
+            particle.rotation.x += Math.PI / 60;
+            particle.rotation.y += Math.PI / 60;
+        } else {
+            particle.data.angle += 0.005 * particle.data.distance / radiusMax;
 
-        particle.rotation.x += Math.PI / 60;
-        particle.rotation.y += Math.PI / 60;
+            particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
+            particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
+
+            particle.rotation.x += Math.PI / 60;
+            particle.rotation.y += Math.PI / 60;
+        }
     }
 
     planet.rotation.y += 0.005;
@@ -245,27 +258,42 @@ animation.start();
 // Start rendering.
 world.start();
 
+
+
+let selectedParticle = null;
+
 for (let i = 0, max = particles.length; i < max; i++) {
     const particle = particles[i];
     mouse.track(particle);
 
-    particle.on('dragstart', () => {
-        console.log('mousemove');
+    particle.on('mousedown', () => {
+        particle.status.isHold = true;
     });
 
-    particle.on('dragstop', () => {
-        sphere.material.color.set(UTILS.$colors.mesh);
-        console.log('mouseout');
-    });
+    particle.on('mouseup', () => {
+        particle.status.isHold = false;
+        particle.status.isLerping = true;
 
-    particle.on('mousedown', (e) => {
-        mouse.on('move', () => {
-            particle.position.copy(mouse.project());
+        particle.status.lerpFrom = particle.position;
+        particle.status.lerpTo = new THREE.Vector3(
+            Math.cos(particle.data.angle) * particle.data.distance,
+            particle.position.y = -10 * Math.random() + 4,
+            Math.sin(particle.data.angle) * particle.data.distance,
+        );
+
+        const animationLoop = new WHS.Loop((clock) => {
+
+            let i = clock.getElapsedTime() / 5;
+
+            let lerpBy = particle.status.lerpFrom.lerp(particle.status.lerpTo, i);
+
+            particle.position = lerpBy;
+
+            if (clock.getElapsedTime() > 1) {
+                animationLoop.stop(world);
+                particle.status.isLerping = false;
+            }
         });
+        animationLoop.start(world);
     });
-
-    particle.on('mouseup', (e) => {
-        mouse.off('move');
-    });
-
 }
