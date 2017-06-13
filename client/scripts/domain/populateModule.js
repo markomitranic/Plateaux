@@ -20,6 +20,7 @@ sound.on('load', function(){
 });
 
 function init() {
+    return;
     if (!loadProgress.server || !loadProgress.sound) { return; }
 
     newGizmo('gizmo_1', s1, mat[1], loadProgress.serverData.gizmo_1.distance, loadProgress.serverData.gizmo_1.angle, loadProgress.serverData.gizmo_1.elevation, loadProgress.serverData.gizmo_1.awake);
