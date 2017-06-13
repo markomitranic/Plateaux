@@ -1,7 +1,7 @@
 const gizmos = new WHS.Group();
 gizmos.addTo(space);
 
-function newGizmo (name, mesh, material, distance, angle, elevation) {
+function newGizmo (name, mesh, material, distance, angle, elevation, sleeping) {
     const radiusMin = 200, // Min radius of the asteroid belt.
         radiusMax = 220, // Max radius of the asteroid belt.
         particleMinRadius = 8, // Min of asteroid radius.
@@ -73,6 +73,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation) {
     particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
     particle.position.y = elevation;
     particle.rotation.set(Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random());
+    particle.addTo(gizmos);
 
     const animation = new WHS.Loop(() => {
         switch (particle.data.status) {
@@ -96,9 +97,14 @@ function newGizmo (name, mesh, material, distance, angle, elevation) {
     world.addLoop(animation);
     animation.start();
 
-    const event = new CustomEvent('gizmoWake', { 'detail': particle.data });
-    document.dispatchEvent(event);
-    particle.addTo(gizmos);
+    if (sleeping) {
+        particle.data.putToSleep();
+    } else {
+        particle.data.status = "isSleeping";
+        particle.position.copy(new THREE.Vector3(0, 0, 0));
+        particle.scale = {x: 0.0001, y: 0.0001, z: 0.0001};
+        particle.data.wakeUp();
+    }
 
     mouse.track(particle);
 
@@ -113,7 +119,21 @@ function newGizmo (name, mesh, material, distance, angle, elevation) {
             particle.data.lerpToOrbit();
         }
     });
+
 }
+
+function findGizmoKey(name) {
+    let gizmoKey = null;
+    gizmos.children.forEach((gizmo, key) => {
+        if (gizmo.data.name === name) {
+            gizmoKey = key;
+        }
+    });
+
+    return gizmoKey;
+
+}
+
 
 
 

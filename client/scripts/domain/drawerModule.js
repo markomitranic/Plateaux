@@ -17,3 +17,12 @@ document.addEventListener('gizmoSleep', function (e) {
 document.addEventListener('gizmoWake', function (e) {
     animateFadeOut(findButtonByType(e.detail.name));
 });
+
+const buttons = document.querySelectorAll('#drawer li');
+
+buttons.forEach((button, key) => {
+    button.addEventListener('click', (e) => {
+        const gizmoKey = findGizmoKey(e.target.classList[0]);
+        gizmos.children[gizmoKey].data.wakeUp();
+    });
+});
