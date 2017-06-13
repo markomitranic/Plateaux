@@ -38,8 +38,6 @@ const soundIdsCache = {
 
 document.addEventListener('gizmoSleep', function (e) {
     sound.stop(soundIdsCache[e.detail.name]);
-    console.log(soundIdsCache);
-    console.log(soundIdsCache[e.detail.name]);
 });
 
 document.addEventListener('gizmoWake', function (e) {
