@@ -1,44 +1,7 @@
 const gizmos = new WHS.Group();
 gizmos.addTo(space);
 
-// Create Gizmos
-newGizmo(s1, mat[1]);
-newGizmo(s2, mat[2]);
-newGizmo(s3, mat[3]);
-newGizmo(s4, mat[0]);
-newGizmo(s3, mat[2]);
-newGizmo(s1, mat[2]);
-newGizmo(s2, mat[3]);
-newGizmo(s1, mat[2]);
-newGizmo(s3, mat[1]);
-newGizmo(s4, mat[0]);
-newGizmo(s4, mat[0]);
-
-// Animating rotating shapes around planet.
-const animation = new WHS.Loop(() => {
-    for (let i = 0, max = gizmos.children.length; i < max; i++) {
-        const particle = gizmos.children[i];
-
-        if (particle.status.isHold) {
-            particle.position.copy(mouse.project());
-        } else if (particle.status.isLerping) {
-            particle.rotation.x += Math.PI / 60;
-            particle.rotation.y += Math.PI / 60;
-        } else if (particle.status.isSleeping) {
-
-        } else {
-            particle.data.angle += 0.005 * particle.data.distance / radiusMax;
-            particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
-            particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
-            particle.rotation.x += Math.PI / 120;
-            particle.rotation.y += Math.PI / 120;
-        }
-    }
-});
-world.addLoop(animation);
-animation.start();
-
-function newGizmo (mesh, material) {
+function newGizmo (name, mesh, material, distance, angle, elevation) {
     const radiusMin = 200, // Min radius of the asteroid belt.
         radiusMax = 220, // Max radius of the asteroid belt.
         particleMinRadius = 8, // Min of asteroid radius.
@@ -60,24 +23,98 @@ function newGizmo (mesh, material) {
     particle.material.map = WHS.TextureModule.load(`assets/spider.png`);
 
     particle.data = {
-        distance: radiusMin + Math.random() * (radiusMax - radiusMin),
-        angle: Math.random() * Math.PI * 2
+        name: name,
+        distance: distance,
+        elevation: elevation,
+        angle: angle,
+        status: "",
+        pickup: () => {
+            particle.data.status = "isHold";
+        },
+        lerpToOrbit: () => {
+            particle.data.status = "isLerping";
+
+            particle.data.lerpFrom = particle.position;
+            particle.data.lerpTo = new THREE.Vector3(
+                Math.cos(particle.data.angle) * particle.data.distance,
+                0,
+                Math.sin(particle.data.angle) * particle.data.distance,
+            );
+
+            const animationLoop = new WHS.Loop((clock) => {
+                let i = clock.getElapsedTime() / 5;
+                particle.position = particle.data.lerpFrom.lerp(particle.data.lerpTo, i);
+                if (clock.getElapsedTime() > 1) {
+                    animationLoop.stop(world);
+                    particle.data.status = '';
+                }
+            });
+            animationLoop.start(world);
+        },
+        putToSleep: () => {
+            particle.data.status = "isSleeping";
+            particle.position.copy(new THREE.Vector3(0, 0, 0));
+            particle.scale = {x: 0.0001, y: 0.0001, z: 0.0001};
+
+            const event = new CustomEvent('gizmoSleep', { 'detail': particle.data });
+            document.dispatchEvent(event);
+        },
+        wakeUp: () => {
+            particle.scale = {x: 1, y: 1, z: 1};
+            particle.data.lerpToOrbit();
+
+            const event = new CustomEvent('gizmoWake', { 'detail': particle.data });
+            document.dispatchEvent(event);
+        }
     };
 
     // Set position & rotation.
     particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
     particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
-    particle.position.y = -10 * Math.random() + 4;
-    particle.status = {
-        isHold: false,
-        isLerping: false,
-        isSleeping: false
-    };
+    particle.position.y = elevation;
     particle.rotation.set(Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random());
 
-    // Add to group
+    const animation = new WHS.Loop(() => {
+        switch (particle.data.status) {
+            case "isHold":
+                particle.position.copy(mouse.project());
+                break;
+            case "isLerping":
+                particle.rotation.x += Math.PI / 60;
+                particle.rotation.y += Math.PI / 60;
+                break;
+            case "isSleeping":
+                break;
+            default:
+                particle.data.angle += 0.005 * particle.data.distance / radiusMax;
+                particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
+                particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
+                particle.rotation.x += Math.PI / 120;
+                particle.rotation.y += Math.PI / 120;
+        }
+    });
+    world.addLoop(animation);
+    animation.start();
+
+    const event = new CustomEvent('gizmoWake', { 'detail': particle.data });
+    document.dispatchEvent(event);
     particle.addTo(gizmos);
+
+    mouse.track(particle);
+
+    particle.on('mousedown', () => {
+        particle.data.pickup();
+    });
+
+    particle.on('mouseup', () => {
+        if (planet.isHover) {
+            particle.data.putToSleep();
+        } else {
+            particle.data.lerpToOrbit();
+        }
+    });
 }
+
 
 
 

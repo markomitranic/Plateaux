@@ -1,0 +1,91 @@
+#drawer {
+  display: block;
+  width: 100vw;
+  height: 100px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transform: translateY(-80px);
+  transition: 0.3s transform ease-in-out;
+
+  &:hover {
+    transform: translateY(0);
+  }
+
+
+  nav {
+    padding-top: 20px;
+    margin: 0;
+
+    ul {
+      list-style-type: none;
+      display: flex;
+      justify-content: center;
+
+      li {
+        display: block;
+        background-color: transparent;
+        color: transparent;
+        position: relative;
+        perspective: 100px;
+        width: 100px;
+        height: 100px;
+        transition: all .4s cubic-bezier(.16, .53, .15, .99) 0s;
+        text-align: center;
+        line-height: inherit;
+        padding-top: 100px;
+        box-sizing: border-box;
+        margin-left: 20px;
+
+        &::before {
+          display: block;
+          content: "";
+          transform: rotateY(-19deg) rotateX(-25deg) rotateZ(-5deg) translateX(-7px);
+          transition: all .4s cubic-bezier(.16, .53, .15, .99) 0s;
+          background: #4a80b1;
+          background: rgba(255,255,255,0.1);
+          border-radius: 3px;
+          z-index: -1;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          background-position: center center;
+          background-size: cover;
+          box-shadow: 0 0 10px 0px black;
+        }
+
+        &:hover {
+          color: white;
+          cursor: pointer;
+          &:before {
+            transform: scale(1.1);
+          }
+        }
+
+        &.fadeOut {
+          width: 0;
+          margin-left: 0;
+        }
+
+        &.gizmo_1:before {
+          background-image: url(http://i68.tinypic.com/9gelqd.jpg);
+        }
+        &.gizmo_2:before {
+          background-image: url(http://i68.tinypic.com/25qsl7m.jpg);
+        }
+        &.gizmo_3:before {
+          background-image: url(http://i66.tinypic.com/beabmp.jpg);
+        }
+        &.gizmo_4:before {
+          background-image: url(http://oi64.tinypic.com/oggd8g.jpg);
+        }
+        &.gizmo_5:before {
+          background-image: url(http://i68.tinypic.com/2r7o96c.jpg);
+        }
+      }
+    }
+  }
+}

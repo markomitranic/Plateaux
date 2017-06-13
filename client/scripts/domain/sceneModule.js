@@ -6,13 +6,17 @@ const radiusMin = 180, // Min radius of the asteroid belt.
     planetSize = 50; // Radius of planet.
 
 const mouse = new WHS.VirtualMouseModule(world);
+
 const dynamicGeometry = new WHS.DynamicGeometryModule();
+
 const orbitControls = new WHS.OrbitControlsModule();
+
 const camera = new WHS.CameraModule({
         position: new THREE.Vector3(0, 100, 400),
         far: 2000,
         near: 1
     });
+
 const renderer = new WHS.RenderingModule({
     bgColor: 0x2a3340,
 

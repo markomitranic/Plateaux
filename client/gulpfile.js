@@ -1,11 +1,12 @@
 
 var scssInput = ['scss/style.scss'],
     jsInput = [
-        'scripts/domain/scene.js',
-        'scripts/domain/planetModule.js',
+        'scripts/domain/sceneModule.js',
         'scripts/domain/materialsModule.js',
+        'scripts/domain/planetModule.js',
         'scripts/domain/gizmoModule.js',
         'scripts/domain/asteroidsModule.js',
+        'scripts/domain/drawerModule.js',
         'scripts/domain/populateModule.js',
         'scripts/domain/**/*.js'
     ],

@@ -1,40 +1,25 @@
-//
-//
-// // Animating rotating shapes around planet.
-// const animation = new WHS.Loop(() => {
-//     for (let i = 0, max = particles.length; i < max; i++) {
-//         const particle = particles[i];
-//
-//         if (particle.status.isHold) {
-//             particle.position.copy(mouse.project());
-//         } else if (particle.status.isLerping) {
-//             particle.rotation.x += Math.PI / 60;
-//             particle.rotation.y += Math.PI / 60;
-//         } else if (particle.status.isSleeping) {
-//
-//         } else {
-//             particle.data.angle += 0.005 * particle.data.distance / radiusMax;
-//             particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
-//             particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
-//             particle.rotation.x += Math.PI / 60;
-//             particle.rotation.y += Math.PI / 60;
-//         }
-//     }
-// });
-// world.addLoop(animation);
-// animation.start();
-//
-//
-//
-// const animations = {};
-//
-// animations.planet = new WHS.Loop(() => {
-//     planet.rotation.y += 0.005;
-// });
-// world.addLoop(animations.planet);
-// animations.planet.start();
 
+function distance() {
+    return radiusMin + Math.random() * (radiusMax - radiusMin);
+}
+function angle() {
+    return Math.random() * Math.PI * 2;
+}
+function elevation() {
+    return -10 * Math.random() + 4;
+}
 
+newGizmo('gizmo_1', s1, mat[1], distance(), angle(), elevation());
+newGizmo('gizmo_2', s2, mat[2], distance(), angle(), elevation());
+newGizmo('gizmo_3', s3, mat[3], distance(), angle(), elevation());
+// newGizmo('gizmo_4', s4, mat[0], distance(), angle(), elevation());
+// newGizmo('gizmo_5', s3, mat[2], distance(), angle(), elevation());
+// newGizmo('gizmo_6', s1, mat[2], distance(), angle(), elevation());
+// newGizmo('gizmo_7', s2, mat[3], distance(), angle(), elevation());
+// newGizmo('gizmo_8', s1, mat[2], distance(), angle(), elevation());
+// newGizmo('gizmo_9', s3, mat[1], distance(), angle(), elevation());
+// newGizmo('gizmo_10', s4, mat[0], distance(), angle(), elevation());
+// newGizmo('gizmo_11', s4, mat[0], distance(), angle(), elevation());
 
 // Start rendering.
 world.start();
