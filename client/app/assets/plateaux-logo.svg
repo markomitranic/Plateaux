@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+  viewBox="2500 1400 2600 2800"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style type="text/css">
+     <![CDATA[
+     .str0 {stroke-width:277.78;stroke-linecap:round;stroke-linejoin:round}
+     .fil0 {fill:none;fill-rule:nonzero}
+     ]]>
+   </style>
+ </defs>
+ <g id="__x0023_Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_334913304">
+    <g>
+      <line class="fil0 str0" x1="4693" y1="3340" x2="4869" y2="3123" stroke="#910000"/>
+      <line class="fil0 str0" x1="2787" y1="2509" x2="3137" y2="2077" stroke="#FF5A03"/>
+      <line class="fil0 str0" x1="3537" y1="1716" x2="3537" y2="1730" stroke="#FF640E"/>
+      <line class="fil0 str0" x1="4204" y1="3871" x2="4179" y2="3840" stroke="#910000"/>
+      <line class="fil0 str0" x1="2754" y1="3154" x2="2790" y2="3160" stroke="#F60E00"/>
+      <line class="fil0 str0" x1="3014" y1="3560" x2="3443" y2="3201" stroke="#D10000"/>
+      <line class="fil0 str0" x1="3165" y1="2785" x2="4153" y2="1727" stroke="#FF4E00"/>
+      <line class="fil0 str0" x1="3497" y1="3854" x2="4852" y2="2499" stroke="#BA0000"/>
+      <line class="fil0 str0" x1="3818" y1="2826" x2="4588" y2="2015" stroke="#FF4500"/>
+    </g>
+  </g>
+</g>
+</svg>

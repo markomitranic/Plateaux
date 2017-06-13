@@ -8,7 +8,7 @@
 #preloadCurtain {
   width: 100vw;
   height: 100vh;
-  display: block;
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -22,7 +22,57 @@
     opacity: 0;
   }
 
+  .logo {
+    width: 500px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
 
+    img {
+      width: 100px;
+      height: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    h1 {
+      color: white;
+      position: absolute;
+      top: 40px;
+      left: 200px;
+      font-size: 60px;
+      line-height: 20px;
+      margin: 0;
+    }
+  }
+  .description {
+    color: white;
+    width: 600px;
+    margin: 0 auto;
+  }
+  .loading {
+    & > div {
+      width: 160px;
+      height: 100px;
+      .button {
+        height: 100px;
+        background-image: url(/assets/github-button.png);
+        background-position: center bottom;
+        background-size: contain;
+      }
+      p {
 
+      }
 
+      &.loadingButton {
+
+      }
+      &.enterButton {
+
+      }
+      &.gitHubButton {
+
+      }
+    }
+  }
 }
