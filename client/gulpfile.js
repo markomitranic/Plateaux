@@ -1,6 +1,7 @@
 
 var scssInput = ['scss/style.scss'],
     jsInput = [
+        'scripts/domain/audioModule.js',
         'scripts/domain/sceneModule.js',
         'scripts/domain/materialsModule.js',
         'scripts/domain/planetModule.js',
@@ -14,6 +15,7 @@ var scssInput = ['scss/style.scss'],
         'scripts/vendor/three.min.js',
         'scripts/vendor/whitestorm.min.js',
         'scripts/vendor/whitestorm.physics.min.js',
+        'scripts/vendor/howler.min.js',
         'scripts/vendor/**/*.js'
     ],
     scssOutput = 'app/css',

@@ -1,7 +1,7 @@
 const gizmos = new WHS.Group();
 gizmos.addTo(space);
 
-function newGizmo (name, mesh, material, distance, angle, elevation, sleeping) {
+function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
     const radiusMin = 200, // Min radius of the asteroid belt.
         radiusMax = 220, // Max radius of the asteroid belt.
         particleMinRadius = 8, // Min of asteroid radius.
@@ -97,13 +97,13 @@ function newGizmo (name, mesh, material, distance, angle, elevation, sleeping) {
     world.addLoop(animation);
     animation.start();
 
-    if (sleeping) {
-        particle.data.putToSleep();
-    } else {
+    if (awake) {
         particle.data.status = "isSleeping";
         particle.position.copy(new THREE.Vector3(0, 0, 0));
         particle.scale = {x: 0.0001, y: 0.0001, z: 0.0001};
         particle.data.wakeUp();
+    } else {
+        particle.data.putToSleep();
     }
 
     mouse.track(particle);
