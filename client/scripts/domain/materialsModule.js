@@ -76,3 +76,24 @@ const s4 = new WHS.Sphere({
         emissive: 0x270000
     })
 });
+
+function getMaterial(materialNumber) {
+    return mat[materialNumber];
+}
+
+function getMesh(meshName) {
+    switch (meshName) {
+        case "dodecahedron":
+            return s1;
+            break;
+        case "box":
+            return s2;
+            break;
+        case "cylinder":
+            return s3;
+            break;
+        case "sphere":
+            return s4;
+            break;
+    }
+}

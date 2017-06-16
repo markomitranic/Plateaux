@@ -42,5 +42,130 @@ function guid() {
 }
 
 function populateWorld() {
-    return { status: "populateWorld", gizmoArray: [] };
+    const radiusMin = 180, // Min radius of the gizmo belt.
+        radiusMax = 240; // Max radius of the gizmo belt.
+
+    function distance() {
+        return radiusMin + Math.random() * (radiusMax - radiusMin);
+    }
+    function angle() {
+        return Math.random() * Math.PI * 2;
+    }
+    function elevation() {
+        return -10 * Math.random() + 4;
+    }
+
+    const response = { status: "populateWorld", gizmoArray: [] };
+
+    response.gizmoArray.push({
+        name: 'gizmo_1',
+        mesh: 'dodecahedron',
+        material: 1,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: true
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_2',
+        mesh: 'box',
+        material: 2,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_3',
+        mesh: 'cylinder',
+        material: 3,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: true
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_4',
+        mesh: 'sphere',
+        material: 0,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_5',
+        mesh: 'cylinder',
+        material: 2,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_6',
+        mesh: 'dodecahedron',
+        material: 2,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_7',
+        mesh: 'box',
+        material: 3,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_8',
+        mesh: 'dodecahedron',
+        material: 2,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_9',
+        mesh: 'cylinder',
+        material: 1,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_10',
+        mesh: 'sphere',
+        material: 0,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    response.gizmoArray.push({
+        name: 'gizmo_11',
+        mesh: 'sphere',
+        material: 0,
+        distance: distance(),
+        angle: angle(),
+        elevation: elevation(),
+        awake: false
+    });
+
+    return response;
 }
