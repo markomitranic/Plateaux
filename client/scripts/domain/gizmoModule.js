@@ -29,13 +29,43 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
         angle: angle,
         status: "",
         position: new THREE.Vector3(),
+        init: (awake) => {
+            if (awake) {
+                particle.data.status = "isSleeping";
+                particle.position.copy(new THREE.Vector3(0, 0, 0));
+                particle.scale = {x: 1, y: 1, z: 1};
+                particle.data.status = "isLerping";
+
+                particle.data.lerpFrom = particle.position;
+                particle.data.lerpTo = new THREE.Vector3(
+                    Math.cos(particle.data.angle) * particle.data.distance,
+                    0,
+                    Math.sin(particle.data.angle) * particle.data.distance,
+                );
+
+                const animationLoop = new WHS.Loop((clock) => {
+                    let i = clock.getElapsedTime() / 5;
+                    particle.position = particle.data.lerpFrom.lerp(particle.data.lerpTo, i);
+                    if (clock.getElapsedTime() > 1) {
+                        animationLoop.stop(world);
+                        particle.data.status = '';
+                    }
+                });
+                animationLoop.start(world);
+
+                const event = new CustomEvent('gizmoWake', { 'detail': particle.data });
+                document.dispatchEvent(event);
+            } else {
+                particle.data.status = "isSleeping";
+                particle.position.copy(new THREE.Vector3(0, 0, 0));
+                particle.scale = {x: 0.0001, y: 0.0001, z: 0.0001};
+
+                const event = new CustomEvent('gizmoSleep', { 'detail': particle.data });
+                document.dispatchEvent(event);
+            }
+        },
         pickup: () => {
             particle.data.status = "isHold";
-        },
-        remotePickup: (data) => {
-            console.log(data);
-            particle.data.status = "isRemoteHold";
-            particle.position.copy(data.position);
         },
         lerpToOrbit: () => {
             particle.data.status = "isLerping";
@@ -56,6 +86,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
                 }
             });
             animationLoop.start(world);
+            socketEmit('gizmoLerp', particle.data);
         },
         putToSleep: () => {
             particle.data.status = "isSleeping";
@@ -64,6 +95,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
 
             const event = new CustomEvent('gizmoSleep', { 'detail': particle.data });
             document.dispatchEvent(event);
+            socketEmit('gizmoSleep', particle.data);
         },
         wakeUp: () => {
             particle.scale = {x: 1, y: 1, z: 1};
@@ -71,7 +103,44 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
 
             const event = new CustomEvent('gizmoWake', { 'detail': particle.data });
             document.dispatchEvent(event);
-        }
+            socketEmit('gizmoWake', particle.data);
+        },
+        remotePickup: (data) => {
+            particle.data.status = "isRemoteHold";
+            particle.position.copy(data.position);
+        },
+        remoteLerpToOrbit: (data) => {
+            particle.data.status = "isLerping";
+            particle.data.lerpFrom = particle.position;
+            particle.data.lerpTo = data.lerpTo;
+            particle.data.angle = data.angle;
+            particle.data.distance = data.distance;
+            particle.data.elevation = data.elevation;
+
+            const animationLoop = new WHS.Loop((clock) => {
+                let i = clock.getElapsedTime() / 5;
+                particle.position = particle.data.lerpFrom.lerp(particle.data.lerpTo, i);
+                if (clock.getElapsedTime() > 1) {
+                    animationLoop.stop(world);
+                    particle.data.status = '';
+                }
+            });
+            animationLoop.start(world);
+        },
+        remotePutToSleep: (data) => {
+            particle.data.status = "isSleeping";
+            particle.position.copy(new THREE.Vector3(0, 0, 0));
+            particle.scale = {x: 0.0001, y: 0.0001, z: 0.0001};
+
+            const event = new CustomEvent('gizmoSleep', { 'detail': particle.data });
+            document.dispatchEvent(event);
+        },
+        remoteWakeUp: (data) => {
+            particle.scale = {x: 1, y: 1, z: 1};
+
+            const event = new CustomEvent('gizmoWake', { 'detail': particle.data });
+            document.dispatchEvent(event);
+        },
     };
 
     // Set position & rotation.
@@ -80,6 +149,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
     particle.position.y = elevation;
     particle.rotation.set(Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random());
     particle.addTo(gizmos);
+    particle.scale = {x: 0.0001, y: 0.0001, z: 0.0001};
 
     const animation = new WHS.Loop(() => {
         switch (particle.data.status) {
@@ -88,15 +158,13 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
             case "isHold":
                 particle.position.copy(mouse.project());
                 particle.data.position = particle.position;
-                console.log(particle.data);
-                let event = new CustomEvent('gizmoHold', { 'detail': particle.data });
-                document.dispatchEvent(event);
-                break;
-            case "isRemoteHold":
+                socketEmit('gizmoHold', particle.data);
                 break;
             case "isLerping":
                 particle.rotation.x += Math.PI / 60;
                 particle.rotation.y += Math.PI / 60;
+                break;
+            case "isRemoteHold":
                 break;
             default:
                 particle.data.angle += 0.005 * particle.data.distance / radiusMax;
@@ -108,15 +176,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
     });
     world.addLoop(animation);
     animation.start();
-
-    if (awake) {
-        particle.data.status = "isSleeping";
-        particle.position.copy(new THREE.Vector3(0, 0, 0));
-        particle.scale = {x: 0.0001, y: 0.0001, z: 0.0001};
-        particle.data.wakeUp();
-    } else {
-        particle.data.putToSleep();
-    }
+    particle.data.init(awake);
 
     mouse.track(particle);
 
@@ -144,9 +204,3 @@ function findGizmoKey(name) {
 
     return gizmoKey;
 }
-
-document.addEventListener('gizmoRemoteHold', (event) => {
-    let gizmo = gizmos.children[findGizmoKey(event.detail.name)];
-    gizmo.data.remotePickup(event.detail);
-});
-

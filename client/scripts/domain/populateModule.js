@@ -8,11 +8,11 @@ let loadProgress = {
     serverData: {}
 };
 
-setTimeout(() => {
+function serverPopulate (data) {
     loadProgress.server = true;
     loadProgress.serverData = serverMock;
     init();
-}, 500);
+}
 
 sound.on('load', function(){
     loadProgress.sound = true;

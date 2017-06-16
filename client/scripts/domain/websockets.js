@@ -14,14 +14,54 @@ socket.addEventListener('close', (message) => {
 
 socket.addEventListener('message', (message) => {
     let remoteGizmo = JSON.parse(message.data);
-    var event = new CustomEvent('gizmoRemoteHold', { 'detail': remoteGizmo });
-    document.dispatchEvent(event);
+    eventHandler(remoteGizmo);
 });
 
-document.addEventListener('gizmoHold', (event) => {
-    socket.send(JSON.stringify(new GizmoMessage(event.detail)));
-});
+function socketEmit(emitType, gizmoData) {
+    let data = new GizmoMessage(gizmoData);
 
+    switch (emitType) {
+        case "gizmoHold":
+            data.status = "gizmoHold";
+            socket.send(JSON.stringify(data));
+            break;
+        case "gizmoLerp":
+            data.status = "gizmoLerp";
+            socket.send(JSON.stringify(data));
+            break;
+        case "gizmoSleep":
+            data.status = "gizmoSleep";
+            socket.send(JSON.stringify(data));
+            break;
+        case "gizmoWake":
+            data.status = "gizmoWake";
+            socket.send(JSON.stringify(data));
+            break;
+    }
+}
+
+function eventHandler (remoteGizmo) {
+    let gizmo = gizmos.children[findGizmoKey(remoteGizmo.name)];
+
+    switch (remoteGizmo.status) {
+        case "gizmoHold":
+            gizmo.data.remotePickup(remoteGizmo);
+            break;
+        case "gizmoLerp":
+            gizmo.data.remoteLerpToOrbit(remoteGizmo);
+            break;
+        case "gizmoSleep":
+            gizmo.data.remotePutToSleep(remoteGizmo);
+            break;
+        case "gizmoWake":
+            gizmo.data.remoteWakeUp(remoteGizmo);
+            break;
+        case "populateWorld":
+            serverPopulate(remoteGizmo.gizmoArray);
+            break;
+
+    }
+}
 
 class GizmoMessage {
     constructor (gizmo) {
@@ -31,5 +71,6 @@ class GizmoMessage {
         this.name = gizmo.name;
         this.status = gizmo.status;
         this.position = gizmo.position;
+        this.lerpTo = gizmo.lerpTo;
     }
 }

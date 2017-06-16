@@ -7,6 +7,8 @@ server.on('connection', function connection(client) {
     client.gs = gs();
     client.id = guid();
 
+    client.send(JSON.stringify(populateWorld()));
+
     client.on('message', function incoming(msg) {
         let message = JSON.parse(msg);
         emitToGS(client, JSON.stringify(message));
@@ -14,23 +16,16 @@ server.on('connection', function connection(client) {
 });
 
 function emitToGS(author, message) {
-
     server.clients.forEach(function (client) {
-        console.log(client.id);
         if (client.gs === author.gs) {
             if (client.id !== author.id) {
                 client.send(message);
             }
         }
     });
-
-
-    // server.clients.forEach( (client) => {
-    //     if(client.gs === gs){
-    //         client.send(message);
-    //     }
-    // });
 }
+
+let gsArray = [];
 
 function gs() {
     return 1;
@@ -44,4 +39,8 @@ function guid() {
     }
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
+}
+
+function populateWorld() {
+    return { status: "populateWorld", gizmoArray: [] };
 }
