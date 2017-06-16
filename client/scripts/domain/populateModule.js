@@ -27,6 +27,17 @@ function init() {
     // setTimeout(() => {
     //     curtain.parent.removeChild(curtain);
     // }, 2000);
+    //
+
+
+
+
+
+
+
+
+
+    // return;
 
     newGizmo('gizmo_1', s1, mat[1], loadProgress.serverData.gizmo_1.distance, loadProgress.serverData.gizmo_1.angle, loadProgress.serverData.gizmo_1.elevation, loadProgress.serverData.gizmo_1.awake);
     newGizmo('gizmo_2', s2, mat[2], loadProgress.serverData.gizmo_2.distance, loadProgress.serverData.gizmo_2.angle, loadProgress.serverData.gizmo_2.elevation, loadProgress.serverData.gizmo_2.awake);

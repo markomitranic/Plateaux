@@ -28,8 +28,14 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
         elevation: elevation,
         angle: angle,
         status: "",
+        position: new THREE.Vector3(),
         pickup: () => {
             particle.data.status = "isHold";
+        },
+        remotePickup: (data) => {
+            console.log(data);
+            particle.data.status = "isRemoteHold";
+            particle.position.copy(data.position);
         },
         lerpToOrbit: () => {
             particle.data.status = "isLerping";
@@ -77,14 +83,20 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
 
     const animation = new WHS.Loop(() => {
         switch (particle.data.status) {
+            case "isSleeping":
+                break;
             case "isHold":
                 particle.position.copy(mouse.project());
+                particle.data.position = particle.position;
+                console.log(particle.data);
+                let event = new CustomEvent('gizmoHold', { 'detail': particle.data });
+                document.dispatchEvent(event);
+                break;
+            case "isRemoteHold":
                 break;
             case "isLerping":
                 particle.rotation.x += Math.PI / 60;
                 particle.rotation.y += Math.PI / 60;
-                break;
-            case "isSleeping":
                 break;
             default:
                 particle.data.angle += 0.005 * particle.data.distance / radiusMax;
@@ -131,11 +143,10 @@ function findGizmoKey(name) {
     });
 
     return gizmoKey;
-
 }
 
-
-
-
-
+document.addEventListener('gizmoRemoteHold', (event) => {
+    let gizmo = gizmos.children[findGizmoKey(event.detail.name)];
+    gizmo.data.remotePickup(event.detail);
+});
 
