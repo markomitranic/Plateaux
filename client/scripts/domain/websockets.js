@@ -64,6 +64,9 @@ function eventHandler (data) {
         case "askForWorldState":
             sendWorldState(data);
             break;
+        case "waitForWorldState":
+            console.log('There are people in the room, waiting for their worldState.');
+            break;
 
     }
 }
