@@ -12,58 +12,57 @@ socket.addEventListener('close', (message) => {
     console.log("Socket connection closed!");
 });
 
-socket.addEventListener('message', (message) => {
-    let remoteGizmo = JSON.parse(message.data);
-    eventHandler(remoteGizmo);
+socket.addEventListener('message', (msg) => {
+    eventHandler(JSON.parse(msg.data));
 });
 
-function socketEmit(emitType, gizmoData) {
-    let data = new GizmoMessage(gizmoData);
+function socketEmit(emitType, data) {
+    let gizmoData = new GizmoMessage(data);
 
     switch (emitType) {
         case "gizmoHold":
-            data.status = "gizmoHold";
-            socket.send(JSON.stringify(data));
+            gizmoData.status = "gizmoHold";
+            socket.send(JSON.stringify(gizmoData));
             break;
         case "gizmoLerp":
-            data.status = "gizmoLerp";
-            socket.send(JSON.stringify(data));
+            gizmoData.status = "gizmoLerp";
+            socket.send(JSON.stringify(gizmoData));
             break;
         case "gizmoSleep":
-            data.status = "gizmoSleep";
-            socket.send(JSON.stringify(data));
+            gizmoData.status = "gizmoSleep";
+            socket.send(JSON.stringify(gizmoData));
             break;
         case "gizmoWake":
-            data.status = "gizmoWake";
-            socket.send(JSON.stringify(data));
+            gizmoData.status = "gizmoWake";
+            socket.send(JSON.stringify(gizmoData));
             break;
         case "worldState":
-            socket.send(JSON.stringify(gizmoData));
+            socket.send(JSON.stringify(data));
             break;
     }
 }
 
-function eventHandler (remoteGizmo) {
-    let gizmo = gizmos.children[findGizmoKey(remoteGizmo.name)];
+function eventHandler (data) {
+    let gizmo = gizmos.children[findGizmoKey(data.name)];
 
-    switch (remoteGizmo.status) {
+    switch (data.status) {
         case "gizmoHold":
-            gizmo.data.remotePickup(remoteGizmo);
+            gizmo.data.remotePickup(data);
             break;
         case "gizmoLerp":
-            gizmo.data.remoteLerpToOrbit(remoteGizmo);
+            gizmo.data.remoteLerpToOrbit(data);
             break;
         case "gizmoSleep":
-            gizmo.data.remotePutToSleep(remoteGizmo);
+            gizmo.data.remotePutToSleep(data);
             break;
         case "gizmoWake":
-            gizmo.data.remoteWakeUp(remoteGizmo);
+            gizmo.data.remoteWakeUp(data);
             break;
         case "populateWorld":
-            serverPopulate(remoteGizmo.gizmoArray);
+            serverPopulate(data.gizmoArray);
             break;
         case "askForWorldState":
-            sendWorldState(remoteGizmo);
+            sendWorldState(data);
             break;
 
     }
