@@ -197,7 +197,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake, posi
             particle.data.lerpToOrbit();
         }
     });
-    
+
     particle.on('mouseover', () => {
         orbitControls.controls.enabled = false;
     });
