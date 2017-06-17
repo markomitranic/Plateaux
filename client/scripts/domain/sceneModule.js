@@ -38,7 +38,6 @@ const world = new WHS.App([
     mouse
 ]);
 
-orbitControls.controls.enabled = false;
 orbitControls.controls.maxDistance = 800;
 orbitControls.controls.minDistance = 100;
 

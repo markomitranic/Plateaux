@@ -17,10 +17,8 @@ planet.addTo(space);
 
 mouse.track(planet);
 planet.on('mouseover', () => {
-    orbitControls.controls.enabled = true;
     planet.isHover = true;
 });
 planet.on('mouseout', () => {
-    orbitControls.controls.enabled = false;
     planet.isHover = false;
 });
