@@ -37,7 +37,7 @@ const soundIdsCache = {
 };
 
 document.addEventListener('gizmoSleep', function (e) {
-    sound.stop(soundIdsCache[e.detail.name]);
+    sound.fade(1, 0, 1000, soundIdsCache[e.detail.name]);
 });
 
 document.addEventListener('gizmoWake', function (e) {
