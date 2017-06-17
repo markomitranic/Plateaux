@@ -34,10 +34,33 @@ function emitToGS(author, message) {
     });
 }
 
-let gsArray = [];
-
 function gs() {
-    return 1;
+    let gsArray = [];
+
+    server.clients.forEach((client) => {
+        if (client.gs) {
+            if (!gsArray[client.gs]) {
+                gsArray[client.gs] = 0;
+            }
+            gsArray[client.gs]++;
+        }
+    });
+
+    let gs = 0;
+
+    gsArray.forEach((gsCount, key) => {
+        if (gsCount < 3) {
+             gs = key;
+        }
+    });
+
+    if (gs === 0 && gsArray.length > 0) {
+        gs = gsArray.length;
+    } else {
+        gs = 1;
+    }
+
+    return gs;
 }
 
 function getClientsForGs (gs) {
