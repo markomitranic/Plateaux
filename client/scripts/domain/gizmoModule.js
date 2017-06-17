@@ -40,7 +40,6 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake, posi
                 particle.data.lerpFrom = particle.position;
 
                 if (position) {
-                    console.log(position);
                     particle.data.lerpTo = new THREE.Vector3(position.x, position.y, position.z);
                 } else {
                     particle.data.lerpTo = new THREE.Vector3(

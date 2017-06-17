@@ -96,7 +96,6 @@ function initializeClientWorld(newClient) {
 }
 
 function forwardWorldStateToClient (message) {
-    console.log(message);
     server.clients.forEach((client) => {
         if (client.id === message.sendTo) {
             const worldState = {
