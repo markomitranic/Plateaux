@@ -3,17 +3,32 @@ const WebSocket = require('ws');
 const server = new WebSocket.Server({ port: 3000 });
 
 server.on('connection', function connection(client) {
-
     client.gs = gs();
     client.id = guid();
+    console.log("New client connected to room: " + client.gs);
 
     client.send(JSON.stringify(populateWorld()));
+
+    client.on('pong', heartbeat);
 
     client.on('message', function incoming(msg) {
         let message = JSON.parse(msg);
         emitToGS(client, JSON.stringify(message));
     });
 });
+
+function heartbeat() {
+    this.isAlive = true;
+}
+
+const interval = setInterval(function ping() {
+    server.clients.forEach(function each(client) {
+        if (client.isAlive === false) return client.terminate();
+
+        client.isAlive = false;
+        client.ping('', false, true);
+    });
+}, 30000);
 
 function emitToGS(author, message) {
     server.clients.forEach(function (client) {
