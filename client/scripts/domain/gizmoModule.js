@@ -204,3 +204,19 @@ function findGizmoKey(name) {
 
     return gizmoKey;
 }
+
+function sendWorldState(message) {
+    const worldState = {
+        status: "worldState",
+        sendTo: message.id,
+        gizmos: []
+    };
+
+
+    gizmos.children.forEach((gizmo) => {
+        worldState.gizmos.push(new GizmoMessage(gizmo.data));
+    });
+
+    console.log(worldState);
+    socketEmit('worldState', worldState);
+}

@@ -37,6 +37,9 @@ function socketEmit(emitType, gizmoData) {
             data.status = "gizmoWake";
             socket.send(JSON.stringify(data));
             break;
+        case "worldState":
+            socket.send(JSON.stringify(gizmoData));
+            break;
     }
 }
 
@@ -58,6 +61,9 @@ function eventHandler (remoteGizmo) {
             break;
         case "populateWorld":
             serverPopulate(remoteGizmo.gizmoArray);
+            break;
+        case "askForWorldState":
+            sendWorldState(remoteGizmo);
             break;
 
     }

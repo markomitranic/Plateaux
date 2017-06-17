@@ -5,30 +5,24 @@ const server = new WebSocket.Server({ port: 3000 });
 server.on('connection', function connection(client) {
     client.gs = gs();
     client.id = guid();
+    client.send(JSON.stringify(initializeClientWorld(client)));
+
     console.log("New client connected to room: " + client.gs);
 
-    client.send(JSON.stringify(populateWorld()));
-
     client.on('pong', heartbeat);
-
-    client.on('message', function incoming(msg) {
+    client.on('message', function(msg) {
         let message = JSON.parse(msg);
-        emitToGS(client, JSON.stringify(message));
+
+        switch (message.status) {
+            case "worldState":
+                console.log('Got World state!');
+                break;
+            default:
+                emitToGS(client, JSON.stringify(message));
+        }
     });
 });
 
-function heartbeat() {
-    this.isAlive = true;
-}
-
-const interval = setInterval(function ping() {
-    server.clients.forEach(function each(client) {
-        if (client.isAlive === false) return client.terminate();
-
-        client.isAlive = false;
-        client.ping('', false, true);
-    });
-}, 30000);
 
 function emitToGS(author, message) {
     server.clients.forEach(function (client) {
@@ -46,6 +40,16 @@ function gs() {
     return 1;
 }
 
+function getClientsForGs (gs) {
+    let clientsInGs = [];
+    server.clients.forEach(function (client) {
+        if (client.gs === gs) {
+            clientsInGs.push(client.id);
+        }
+    });
+    return clientsInGs;
+}
+
 function guid() {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -56,7 +60,42 @@ function guid() {
         s4() + '-' + s4() + s4() + s4();
 }
 
-function populateWorld() {
+function heartbeat() {
+    this.isAlive = true;
+}
+
+const interval = setInterval(function ping() {
+    server.clients.forEach(function each(client) {
+        if (client.isAlive === false) return client.terminate();
+
+        client.isAlive = false;
+        client.ping('', false, true);
+    });
+}, 30000);
+
+function initializeClientWorld(newClient) {
+
+    let gsClients = getClientsForGs(newClient.gs);
+
+    if (gsClients.length <= 1) {
+        return generateWorld();
+    } else {
+        const askMessage = {
+            status: "askForWorldState",
+            id: newClient.id
+        };
+
+        server.clients.forEach((client) => {
+            if (client.id === gsClients[0]) {
+                client.send(JSON.stringify(askMessage));
+            }
+        });
+
+        return "waitForWorldState";
+    }
+}
+
+function generateWorld() {
     const radiusMin = 180, // Min radius of the gizmo belt.
         radiusMax = 240; // Max radius of the gizmo belt.
 
