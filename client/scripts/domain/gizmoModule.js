@@ -1,13 +1,13 @@
 const gizmos = new WHS.Group();
 gizmos.addTo(space);
 
-function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
+function newGizmo (name, mesh, material, distance, angle, elevation, awake, position) {
     const radiusMin = 200, // Min radius of the asteroid belt.
         radiusMax = 220, // Max radius of the asteroid belt.
         particleMinRadius = 8, // Min of asteroid radius.
         particleMaxRadius = 20; // Max of asteroid radius.
 
-    const particle = mesh.clone();
+    const particle = getMesh(mesh).clone();
     const radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
 
     particle.g_({
@@ -19,14 +19,16 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
         radius
     });
 
-    particle.material = material.clone();
+    particle.material = getMaterial(material).clone();
     particle.material.map = WHS.TextureModule.load(`assets/spider.png`);
 
     particle.data = {
         name: name,
+        mesh: mesh,
+        material: material,
         distance: distance,
-        elevation: elevation,
         angle: angle,
+        elevation: elevation,
         status: "",
         position: new THREE.Vector3(),
         init: (awake) => {
@@ -35,13 +37,18 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake) {
                 particle.position.copy(new THREE.Vector3(0, 0, 0));
                 particle.scale = {x: 1, y: 1, z: 1};
                 particle.data.status = "isLerping";
-
                 particle.data.lerpFrom = particle.position;
-                particle.data.lerpTo = new THREE.Vector3(
-                    Math.cos(particle.data.angle) * particle.data.distance,
-                    0,
-                    Math.sin(particle.data.angle) * particle.data.distance,
-                );
+
+                if (position) {
+                    console.log(position);
+                    particle.data.lerpTo = new THREE.Vector3(position.x, position.y, position.z);
+                } else {
+                    particle.data.lerpTo = new THREE.Vector3(
+                        Math.cos(particle.data.angle) * particle.data.distance,
+                        0,
+                        Math.sin(particle.data.angle) * particle.data.distance,
+                    );
+                }
 
                 const animationLoop = new WHS.Loop((clock) => {
                     let i = clock.getElapsedTime() / 5;
@@ -209,14 +216,23 @@ function sendWorldState(message) {
     const worldState = {
         status: "worldState",
         sendTo: message.id,
-        gizmos: []
+        gizmoArray: []
     };
 
-
     gizmos.children.forEach((gizmo) => {
-        worldState.gizmos.push(new GizmoMessage(gizmo.data));
+        const gizmoData = {
+            name: gizmo.data.name,
+            mesh: gizmo.data.mesh,
+            material: gizmo.data.material,
+            distance: gizmo.data.distance,
+            angle: gizmo.data.angle,
+            elevation: gizmo.data.elevation,
+            awake: (gizmo.data.status !== "isSleeping"),
+            position: gizmo.position
+        };
+
+        worldState.gizmoArray.push(gizmoData);
     });
 
-    console.log(worldState);
     socketEmit('worldState', worldState);
 }

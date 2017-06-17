@@ -15,7 +15,7 @@ server.on('connection', function connection(client) {
 
         switch (message.status) {
             case "worldState":
-                console.log('Got World state!');
+                forwardWorldStateToClient(message);
                 break;
             default:
                 emitToGS(client, JSON.stringify(message));
@@ -93,6 +93,19 @@ function initializeClientWorld(newClient) {
 
         return "waitForWorldState";
     }
+}
+
+function forwardWorldStateToClient (message) {
+    console.log(message);
+    server.clients.forEach((client) => {
+        if (client.id === message.sendTo) {
+            const worldState = {
+                status: "populateWorld",
+                gizmoArray: message.gizmoArray
+            };
+            client.send(JSON.stringify(worldState));
+        }
+    });
 }
 
 function generateWorld() {
