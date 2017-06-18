@@ -10,9 +10,11 @@ var scssInput = ['scss/style.scss'],
         'scripts/domain/drawerModule.js',
         'scripts/domain/interfaceModule.js',
         'scripts/domain/populateModule.js',
+        'scripts/domain/preloadModule.js',
         'scripts/domain/**/*.js'
     ],
     vendorInput = [
+        'scripts/vendor/pace.min.js',
         'scripts/vendor/three.min.js',
         'scripts/vendor/whitestorm.min.js',
         'scripts/vendor/whitestorm.physics.min.js',
