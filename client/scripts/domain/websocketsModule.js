@@ -59,23 +59,23 @@ function eventHandler (data) {
             gizmo.data.remoteWakeUp(data);
             break;
         case "populateWorld":
+            addToClientsInGs(1);
             serverPopulate(data.gizmoArray);
             break;
         case "askForWorldState":
             sendWorldState(data);
             break;
         case "waitForWorldState":
-            console.log('There are people in the room, waiting for their worldState.');
+            addToClientsInGs(data.clientsInGs - 1);
             break;
         case "clientJoined":
-            console.log(data);
+            addToClientsInGs(1);
             flashMessage('default', "A new performer has joined the room!");
             break;
         case "clientLeft":
-            console.log(data);
+            addToClientsInGs(-1);
             flashMessage('error', "A performer has left the room!");
             break;
-
     }
 }
 

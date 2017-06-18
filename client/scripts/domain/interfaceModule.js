@@ -3,6 +3,7 @@ const controls = document.getElementById('controls');
 const mobileMessage = document.querySelectorAll('.mobileStopMessage')[0];
 const enterButton = document.querySelectorAll('.enterButton')[0];
 const infoButton = document.querySelectorAll('.infoButton')[0];
+const gsButton = document.querySelectorAll('.gsButton span')[0];
 const curtain = document.getElementById('infoCurtain');
 
 muteButton.addEventListener('click', (e) => {
@@ -43,3 +44,6 @@ if (window.innerWidth < 800) {
     throw new Error("Stopping JS execution because te page is run on a mobile device!");
 }
 
+function addToClientsInGs (newNumber) {
+    gsButton.innerHTML = parseInt(gsButton.innerHTML) + newNumber;
+}

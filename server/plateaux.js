@@ -117,7 +117,7 @@ function initializeClientWorld(newClient) {
             }
         });
 
-        return "waitForWorldState";
+        return {status: "waitForWorldState", clientsInGs: gsClients.length };
     }
 }
 
