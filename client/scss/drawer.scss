@@ -13,7 +13,6 @@
     transform: translateY(0);
   }
 
-
   nav {
     padding-top: 20px;
     margin: 0;
@@ -31,7 +30,7 @@
         perspective: 100px;
         width: 100px;
         height: 100px;
-        transition: all .4s cubic-bezier(.16, .53, .15, .99) 0s;
+        transition: all .4s cubic-bezier(.16, .53, .15, .99) 0s, margin-left 1s linear;
         text-align: center;
         line-height: inherit;
         padding-top: 100px;
