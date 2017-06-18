@@ -9,7 +9,7 @@ It feels like a game - In the top menu, you are presented with a selection of me
 Plateaux was created by Marko Mitranić, as an open-source practical segment of his major BSc thesis at SAE Institute of Technology, in June 2017.
 For any questions regarding the project, please contact the author directly, open up an issue or a pull request.
 
-![Plateaux](http://i65.tinypic.com/29bziw9.jpg]
+![Plateaux](http://i65.tinypic.com/29bziw9.jpg)
 
 ## Known issues & TODOs
 - An user is able to take away a Gizmo that is being hold by another user.
