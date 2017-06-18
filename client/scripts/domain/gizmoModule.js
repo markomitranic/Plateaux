@@ -20,7 +20,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake, posi
     });
 
     particle.material = getMaterial(material).clone();
-    particle.material.map = WHS.TextureModule.load(`assets/spider.png`);
+    particle.material.map = WHS.TextureModule.load('assets/spider.png');
 
     particle.data = {
         name: name,
