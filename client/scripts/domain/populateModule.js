@@ -22,12 +22,11 @@ sound.on('load', function(){
 function init() {
     if (!loadProgress.server || !loadProgress.sound) { return; }
 
-    // let curtain = document.getElementById('preloadCurtain');
-    // curtain.className += 'fadeOut';
-    // setTimeout(() => {
-    //     curtain.parent.removeChild(curtain);
-    // }, 2000);
-    //
+    let curtain = document.getElementById('preloadCurtain');
+    curtain.className += 'fadeOut';
+    setTimeout(() => {
+        curtain.style.display = 'none';
+    }, 2000);
 
 
     loadProgress.serverData.forEach((gizmo, key) => {
