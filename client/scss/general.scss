@@ -89,3 +89,26 @@ body {
     }
   }
 }
+
+#controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index:702;
+
+  div {
+    width: 100px;
+    height: 100px;
+
+    &.infoButton {
+      background: blue;
+    }
+    &.muteButton {
+      background: red;
+
+      &.muted {
+        opacity: 0.5;
+      }
+    }
+  }
+}

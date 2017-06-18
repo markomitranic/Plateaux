@@ -36,6 +36,8 @@ const soundIdsCache = {
     gizmo_11: 0,
 };
 
+let audioMuted = false;
+
 document.addEventListener('gizmoSleep', function (e) {
     sound.fade(1, 0, 1000, soundIdsCache[e.detail.name]);
 });

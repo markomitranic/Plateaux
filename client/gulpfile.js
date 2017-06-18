@@ -8,6 +8,7 @@ var scssInput = ['scss/style.scss'],
         'scripts/domain/gizmoModule.js',
         'scripts/domain/asteroidsModule.js',
         'scripts/domain/drawerModule.js',
+        'scripts/domain/interfaceModule.js',
         'scripts/domain/populateModule.js',
         'scripts/domain/**/*.js'
     ],
