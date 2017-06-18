@@ -189,6 +189,9 @@ canvas {
       opacity: 1;
       cursor: pointer;
     }
+    &:active {
+      opacity:0.5;
+    }
 
     &.infoButton {
       bottom: 10px;
