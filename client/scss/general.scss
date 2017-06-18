@@ -11,11 +11,23 @@ body {
 }
 
 
-#canvas {
+canvas {
   width: 100%;
   height: 100vh;
   display: block;
   overflow: hidden;
+
+  &.gizmoHover {
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+  }
+  &.gizmoHold {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
 }
 
 #preloadCurtain {
@@ -69,7 +81,7 @@ body {
       height: 100px;
       .button {
         height: 100px;
-        background-image: url(/assets/github-button.png);
+        background-image: url('../assets/github-button.png');
         background-position: center bottom;
         background-size: contain;
       }
@@ -112,12 +124,12 @@ body {
     &.infoButton {
       bottom: 10px;
       left: 10px;
-      background-image: url(../assets/button-info.png);
+      background-image: url('../assets/button-info.png');
     }
     &.muteButton {
       bottom: 10px;
       left: 60px;
-      background-image: url(../assets/button-music.png);
+      background-image: url('../assets/button-music.png');
 
       &.muted {
         opacity: 0.2;

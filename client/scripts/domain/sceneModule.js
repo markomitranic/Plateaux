@@ -41,6 +41,13 @@ const world = new WHS.App([
 orbitControls.controls.maxDistance = 800;
 orbitControls.controls.minDistance = 100;
 
+const canvasElement = document.getElementsByTagName('canvas')[0];
+
+canvasElement.addEventListener('mouseup', () => {
+    canvasElement.classList.remove('gizmoHover');
+    canvasElement.classList.remove('gizmoHold');
+});
+
 const space = new WHS.Group();
 space.addTo(world);
 

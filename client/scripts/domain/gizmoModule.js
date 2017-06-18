@@ -188,6 +188,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake, posi
 
     particle.on('mousedown', () => {
         particle.data.pickup();
+        canvasElement.classList.add('gizmoHold');
     });
 
     particle.on('mouseup', () => {
@@ -200,9 +201,11 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake, posi
 
     particle.on('mouseover', () => {
         orbitControls.controls.enabled = false;
+        canvasElement.classList.add('gizmoHover');
     });
     particle.on('mouseout', () => {
         orbitControls.controls.enabled = true;
+        canvasElement.classList.remove('gizmoHover');
     });
 
 }
