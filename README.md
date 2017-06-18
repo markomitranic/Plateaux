@@ -9,6 +9,8 @@ It feels like a game - In the top menu, you are presented with a selection of me
 Plateaux was created by Marko Mitranić, as an open-source practical segment of his major BSc thesis at SAE Institute of Technology, in June 2017.
 For any questions regarding the project, please contact the author directly, open up an issue or a pull request.
 
+[![Plateaux](https://gifyu.com/image/bRTU](https://github.com/markomitranic/Plateaux)
+
 ## Known issues & TODOs
 - An user is able to take away a Gizmo that is being hold by another user.
 - Initial loader stays at 99% for a surreal amount of time (while it loads 14MB of audio).
