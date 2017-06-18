@@ -3,6 +3,8 @@ Plateaux is a multi-directional real-time creative collaboration platform based 
 Plateaux is a state of the art musical collaboration mechanism.
 Pull requests are welcome.
 
+Hosted Live: http://plateaux.space/
+
 Multiple performers collaborate in a real-time, virtual, three-dimensional music jam session, with a goal of creating a non-stop, ever-changing and looping tune.
 It feels like a game - In the top menu, you are presented with a selection of melodies asleep. By selecting any one, you will spawn a three-dimensional Gizmo which can be controlled by any other performer.
 
