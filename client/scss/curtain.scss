@@ -15,7 +15,19 @@
     opacity: 0;
   }
 
+  &.mobileStop {
+    .infoMessage {
+      .mobileStopMessage {
+        display: block;
+      }
+      .description {
+        display: none;
+      }
+    }
+  }
+
   .infoMessage {
+    display: block;
     position: absolute;
     bottom: 10px;
     left: 10px;
@@ -53,7 +65,11 @@
       width: 600px;
       margin: 0 auto;
     }
+    .mobileStopMessage {
+      display: none;
+    }
   }
+
   .links {
     opacity: 0;
     position: absolute;

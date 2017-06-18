@@ -1,5 +1,6 @@
 const muteButton = document.querySelectorAll('#controls .muteButton')[0];
 const controls = document.getElementById('controls');
+const mobileMessage = document.querySelectorAll('.mobileStopMessage')[0];
 const enterButton = document.querySelectorAll('.enterButton')[0];
 const infoButton = document.querySelectorAll('.infoButton')[0];
 const curtain = document.getElementById('infoCurtain');
@@ -32,5 +33,13 @@ function toggleCurtain () {
             controls.classList.add('fadeIn');
         }, 1000);
     }
+}
+
+if (window.innerWidth < 768) {
+    curtain.classList.add('mobileStop');
+    mobileMessage.style.width = window.innerWidth - 20 + 'px';
+
+    window.stop();
+    throw new Error("Stopping JS execution because te page is run on a mobile device!");
 }
 
