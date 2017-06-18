@@ -35,7 +35,7 @@ function toggleCurtain () {
     }
 }
 
-if (window.innerWidth < 768) {
+if (window.innerWidth < 800) {
     curtain.classList.add('mobileStop');
     mobileMessage.style.width = window.innerWidth - 20 + 'px';
 
