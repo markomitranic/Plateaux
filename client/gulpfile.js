@@ -1,6 +1,8 @@
 
 var scssInput = ['scss/style.scss'],
     jsInput = [
+        'scripts/domain/messageModule.js',
+        'scripts/domain/websocketsModule.js',
         'scripts/domain/audioModule.js',
         'scripts/domain/sceneModule.js',
         'scripts/domain/materialsModule.js',

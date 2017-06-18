@@ -1,0 +1,26 @@
+#message {
+  display: block;
+  width: auto;
+  height: 36px;
+  box-sizing: border-box;
+  font-size: 12px;
+  line-height: 34px;
+  padding: 0 15px;
+  background: transparent;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 710;
+  border: 2px solid white;
+  border-radius: 12px;
+  opacity: 0;
+  transition: 0.2s opacity ease-in-out;
+  pointer-events: none;
+  border-color: red;
+  color: red;
+
+  &.fadeIn {
+    opacity: 1;
+    transition: 1s opacity ease-in-out;
+  }
+}

@@ -1,15 +1,15 @@
 const socket = new WebSocket('ws://'+window.location.host+'/server');
 
 socket.addEventListener('error', (message) => {
-    console.log("Socket connection error.");
+    flashMessage('error', 'Error connecting to server!');
 });
 
 socket.addEventListener('open', (message) => {
-    console.log("Socket connection open!");
+    flashMessage('success', 'Connected to server.');
 });
 
 socket.addEventListener('close', (message) => {
-    console.log("Socket connection closed!");
+    flashMessage('error', 'Server closed connection. :(');
 });
 
 socket.addEventListener('message', (msg) => {
@@ -66,6 +66,14 @@ function eventHandler (data) {
             break;
         case "waitForWorldState":
             console.log('There are people in the room, waiting for their worldState.');
+            break;
+        case "clientJoined":
+            console.log(data);
+            flashMessage('default', "A new performer has joined the room!");
+            break;
+        case "clientLeft":
+            console.log(data);
+            flashMessage('error', "A performer has left the room!");
             break;
 
     }

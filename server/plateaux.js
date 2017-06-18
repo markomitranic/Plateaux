@@ -7,6 +7,7 @@ server.on('connection', function connection(client) {
     client.id = guid();
     client.send(JSON.stringify(initializeClientWorld(client)));
 
+    emitToGS(client, JSON.stringify({ status: "clientJoined" }));
     console.log("New client connected to room: " + client.gs);
 
     client.on('pong', heartbeat);
@@ -21,8 +22,10 @@ server.on('connection', function connection(client) {
                 emitToGS(client, JSON.stringify(message));
         }
     });
+    client.on('close', () => {
+        emitToGS(client, JSON.stringify({ status: "clientLeft" }));
+    });
 });
-
 
 function emitToGS(author, message) {
     server.clients.forEach(function (client) {
