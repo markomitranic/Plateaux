@@ -9,6 +9,7 @@
     width: 30px;
     height: 30px;
     position: absolute;
+    bottom: 10px;
     z-index:702;
     background-size: 20px;
     background-position: center center;
@@ -42,7 +43,6 @@
     }
 
     &.infoButton {
-      bottom: 10px;
       left: 10px;
       background-image: url('../assets/button-info.png');
 
@@ -50,9 +50,27 @@
         content: "Back to Information";
       }
     }
-    &.muteButton {
-      bottom: 10px;
+    &.gsButton {
       left: 60px;
+
+      span {
+        width: 100%;
+        height: 36px;
+        display: block;
+        position: relative;
+        top: -5px;
+        text-align: center;
+        line-height: 0;
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      &:before {
+        content: "Participants online";
+      }
+    }
+    &.muteButton {
+      left: 110px;
       background-image: url('../assets/button-music.png');
 
       &:before {
