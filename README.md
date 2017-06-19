@@ -14,12 +14,7 @@ For any questions regarding the project, please contact the author directly, ope
 ![Plateaux](http://i65.tinypic.com/29bziw9.jpg)
 
 ## Known issues & TODOs
-- An user is able to take away a Gizmo that is being hold by another user.
-- Initial loader stays at 99% for a surreal amount of time (while it loads 14MB of audio).
-- Users should not be able to hold more than one Gizmo at a time.
 - Should implement icon textures as visual guidelines for Gizmo recognition (materials and meshes also).
-- After server terminates connection for whatever reason, clients should try to reconnect.
-- Should add a button and allow offline mode (move population logic to client).
 - Should publish major thesis to Medium and link it here for reference.
 
 ## Mobile Support
