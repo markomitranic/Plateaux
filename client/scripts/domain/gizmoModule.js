@@ -187,15 +187,19 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake, posi
     mouse.track(particle);
 
     particle.on('mousedown', () => {
-        particle.data.pickup();
-        canvasElement.classList.add('gizmoHold');
+        if (particle.data.status !== "isRemoteHold") {
+            particle.data.pickup();
+            canvasElement.classList.add('gizmoHold');
+        }
     });
 
     particle.on('mouseup', () => {
-        if (planet.isHover) {
-            particle.data.putToSleep();
-        } else {
-            particle.data.lerpToOrbit();
+        if (particle.data.status !== "isRemoteHold") {
+            if (planet.isHover) {
+                particle.data.putToSleep();
+            } else {
+                particle.data.lerpToOrbit();
+            }
         }
     });
 
