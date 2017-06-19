@@ -5,6 +5,7 @@ const enterButton = document.querySelectorAll('.enterButton')[0];
 const infoButton = document.querySelectorAll('.infoButton')[0];
 const gsButton = document.querySelectorAll('.gsButton span')[0];
 const curtain = document.getElementById('infoCurtain');
+const tutorial = document.getElementById('tutorial');
 
 muteButton.addEventListener('click', (e) => {
     if (audioMuted) {
@@ -23,16 +24,22 @@ infoButton.addEventListener('click', toggleCurtain);
 function toggleCurtain () {
     if (curtain.classList.contains('fadeOut')) {
         curtain.style.display = 'block';
+        tutorial.style.display = 'block';
         setTimeout(() => {
+            tutorial.classList.remove('fadeOut');
             curtain.classList.remove('fadeOut');
             controls.classList.remove('fadeIn');
         }, 100);
     } else {
         curtain.classList.add('fadeOut');
+        tutorial.classList.add('fadeOut');
         setTimeout(() => {
             curtain.style.display = 'none';
             controls.classList.add('fadeIn');
         }, 1000);
+        setTimeout(() => {
+            tutorial.style.display = 'none';
+        }, 20000);
     }
 }
 
