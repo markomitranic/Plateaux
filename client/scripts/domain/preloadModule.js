@@ -20,8 +20,8 @@ function init() {
 
     let links = document.querySelectorAll('.links')[0];
     links.classList.add('fadeIn');
+    tutorial.classList.remove('fadeOut');
 
     flashMessage('default', 'You have joined the room!');
-
     populateWorld();
 }
