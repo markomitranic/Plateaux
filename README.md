@@ -13,13 +13,13 @@ For any questions regarding the project, please contact the author directly, ope
 
 ![Plateaux](http://i65.tinypic.com/29bziw9.jpg)
 
-## Known issues & TODOs
-- Should implement icon textures as visual guidelines for Gizmo recognition (materials and meshes also).
-- Should publish major thesis to Medium and link it here for reference.
+## Acknowledgements
+This project was created using a plaethora of technologies, plugins and blogposts. The full reference list is available as a part of my major thesis (link soon).
 
-## Mobile Support
-Unfortunately, the Plateaux weighs somewhere around 16 MB, so mobile devices are not supported for the sake of users data bills.
-Future prospects include a Cordova mobile app, which would keep audio in local storage. Pull requests are welcome. Until then, please use Plateaux from your desktop browser, thanks!
+In short, 
+- Srdjan Popov created the audio sprites in 2012 as a part of our collaboration on EFSWM project.
+- [Whitestorm.js](https://github.com/WhitestormJS) was used not only as a Three.js plugin of choice, but also the visual design of the planet and its asteroid belt was directly created from one of their documentation examples.
+- [websockets/ws](https://github.com/websockets/ws) was used for websocket control on the Node server side.
 
 ## Installation
 Application consists of two segments, server and a client. At this point, they are divided, and the client is served over standard nginx or apache. As Apache does not play well with Node on the same domain, at least not on UNIX systems, and as we do not want to run it as root, i am attaching a simple nginx server block below:
@@ -61,3 +61,14 @@ gulp watch
 cd server
 node plateaux.js
 ```
+## Known issues & TODOs
+- Should implement icon textures as visual guidelines for Gizmo recognition (materials and meshes also).
+- Should publish major thesis to Medium and link it here for reference.
+
+## Future Prospects
+
+
+
+## Mobile Support
+Unfortunately, the Plateaux weighs somewhere around 16 MB, so mobile devices are not supported for the sake of users data bills.
+Future prospects include a Cordova mobile app, which would keep audio in local storage. Pull requests are welcome. Until then, please use Plateaux from your desktop browser, thanks!
