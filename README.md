@@ -66,8 +66,11 @@ node plateaux.js
 - Should publish major thesis to Medium and link it here for reference.
 
 ## Future Prospects
-
-
+- Mobile version of the project. Maybe even a Cordova Application?
+- Initial loader stays at 99% for a surreal amount of time (while it loads 14MB of audio). This is the problem with the loader configuration (pace.js used).
+- Users should not be able to hold more than one Gizmo at a time.
+- After server terminates connection for whatever reason, clients should be told that they are working offline, and shown a reconnect button.
+- Offline mode population should be allowed by default (move population logic to client).
 
 ## Mobile Support
 Unfortunately, the Plateaux weighs somewhere around 16 MB, so mobile devices are not supported for the sake of users data bills.
