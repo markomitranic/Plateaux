@@ -10,6 +10,7 @@ var scssInput = ['scss/style.scss'],
         'scripts/domain/asteroidsModule.js',
         'scripts/domain/drawerModule.js',
         'scripts/domain/interfaceModule.js',
+        'scripts/domain/barometerModule.js',
         'scripts/domain/populateModule.js',
         'scripts/domain/preloadModule.js'
     ],

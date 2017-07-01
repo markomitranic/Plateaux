@@ -1,0 +1,42 @@
+body {
+  background: #2a3340;
+}
+
+#barometer {
+  position: absolute;
+  left: 10px;
+  bottom: 80px;
+  width: auto;
+  height: 200px;
+  z-index: 700;
+
+  div {
+    min-height: 2%;
+    height: 2%;
+    transition: 0.2s height ease-out, 0.2s transform ease-in-out;
+    position: absolute;
+    bottom: 0;
+    transform-origin: bottom center;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &.barometer-low {
+      width: 50px;
+      background-color: rgba(39, 70, 144, 1);
+    }
+
+    &.barometer-mid {
+      width: 50px;
+      left: 30px;
+      background-color: rgba(214, 255, 183, 0.7);
+    }
+
+    &.barometer-high {
+      width: 20px;
+      left: 70px;
+      background-color: rgba(236, 11, 67, 0.8);
+    }
+  }
+}
