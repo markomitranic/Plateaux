@@ -174,7 +174,7 @@ function generateWorld() {
     // Ghost in the shell
     response.gizmoArray.push({
         name: 'gizmo_3',
-        mesh: 'cylinder',
+        mesh: 'dodecahedron',
         material: "mid",
         distance: distance(),
         angle: angle(),
@@ -185,7 +185,7 @@ function generateWorld() {
     // Dali Eyes
     response.gizmoArray.push({
         name: 'gizmo_4',
-        mesh: 'sphere',
+        mesh: 'box',
         material: "low",
         distance: distance(),
         angle: angle(),
@@ -196,7 +196,7 @@ function generateWorld() {
     // Drive
     response.gizmoArray.push({
         name: 'gizmo_5',
-        mesh: 'cylinder',
+        mesh: 'sphere',
         material: "mid",
         distance: distance(),
         angle: angle(),
@@ -207,7 +207,7 @@ function generateWorld() {
     // Lamp Spark
     response.gizmoArray.push({
         name: 'gizmo_6',
-        mesh: 'dodecahedron',
+        mesh: 'box',
         material: "low",
         distance: distance(),
         angle: angle(),
@@ -218,7 +218,7 @@ function generateWorld() {
     // Acid Hologram
     response.gizmoArray.push({
         name: 'gizmo_7',
-        mesh: 'box',
+        mesh: 'cylinder',
         material: "high",
         distance: distance(),
         angle: angle(),
@@ -229,7 +229,7 @@ function generateWorld() {
     // Totoro Rain
     response.gizmoArray.push({
         name: 'gizmo_8',
-        mesh: 'dodecahedron',
+        mesh: 'box',
         material: "low",
         distance: distance(),
         angle: angle(),
@@ -262,7 +262,7 @@ function generateWorld() {
     // Akira
     response.gizmoArray.push({
         name: 'gizmo_11',
-        mesh: 'sphere',
+        mesh: 'cylinder',
         material: "high",
         distance: distance(),
         angle: angle(),

@@ -76,47 +76,57 @@ $high: #EC0B43;
         &.gizmo_1:before {
           // Bulke Flowers
           background-color: rgba($mid, 0.8);
-          //background-image: url(http://i68.tinypic.com/9gelqd.jpg);
+          background-image: url("../assets/icons/podcast.png");
         }
         &.gizmo_2:before {
           // Bass Eyes
           background-color: rgba($low, 0.8);
+          background-image: url("../assets/icons/qr-code.png");
         }
         &.gizmo_3:before {
           // Ghost in the shell
           background-color: rgba($mid, 0.8);
+          background-image: url("../assets/icons/window.png");
         }
         &.gizmo_4:before {
           // Dali Eyes
           background-color: rgba($low, 0.8);
+          background-image: url("../assets/icons/cog.png");
         }
         &.gizmo_5:before {
           // Drive
           background-color: rgba($mid, 0.8);
+          background-image: url("../assets/icons/microchip.png");
         }
         &.gizmo_6:before {
           // Lamp Spark
           background-color: rgba($low, 0.8);
+          background-image: url("../assets/icons/deaf.png");
         }
         &.gizmo_7:before {
           // Acid Hologram
           background-color: rgba($high, 0.8);
+          background-image: url("../assets/icons/moon.png");
         }
         &.gizmo_8:before {
           // Totoro Rain
           background-color: rgba($low, 0.8);
+          background-image: url("../assets/icons/fire.png");
         }
         &.gizmo_9:before {
           // Horses Wave
           background-color: rgba($high, 0.8);
+          background-image: url("../assets/icons/gravity.png");
         }
         &.gizmo_10:before {
           // Terrified
           background-color: rgba($mid, 0.8);
+          background-image: url("../assets/icons/spider.png");
         }
         &.gizmo_11:before {
           // Akira
           background-color: rgba($high, 0.8);
+          background-image: url("../assets/icons/fusion.png");
         }
       }
     }

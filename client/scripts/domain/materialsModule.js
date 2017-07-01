@@ -11,6 +11,20 @@ const gizmoMat = {
     high: new THREE.MeshPhongMaterial({color: 0xEC0B43, shading: THREE.FlatShading})
 };
 
+const gizmoTexture = {
+    gizmo_1: WHS.TextureModule.load('assets/icons/podcast.png'),
+    gizmo_2: WHS.TextureModule.load('assets/icons/qr-code.png'),
+    gizmo_3: WHS.TextureModule.load('assets/icons/window.png'),
+    gizmo_4: WHS.TextureModule.load('assets/icons/cog.png'),
+    gizmo_5: WHS.TextureModule.load('assets/icons/microchip.png'),
+    gizmo_6: WHS.TextureModule.load('assets/icons/deaf.png'),
+    gizmo_7: WHS.TextureModule.load('assets/icons/moon.png'),
+    gizmo_8: WHS.TextureModule.load('assets/icons/fire.png'),
+    gizmo_9: WHS.TextureModule.load('assets/icons/gravity.png'),
+    gizmo_10: WHS.TextureModule.load('assets/icons/spider.png'),
+    gizmo_11: WHS.TextureModule.load('assets/icons/fusion.png')
+};
+
 const s1 = new WHS.Dodecahedron({
     geometry: {
         buffer: true,
@@ -102,4 +116,8 @@ function getMesh(meshName) {
             return s4;
             break;
     }
+}
+
+function getTexture(textureName) {
+    return gizmoTexture[textureName];
 }

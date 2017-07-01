@@ -4,7 +4,7 @@ gizmos.addTo(space);
 function newGizmo (name, mesh, material, distance, angle, elevation, awake, position) {
     const radiusMin = 200, // Min radius of the asteroid belt.
         radiusMax = 220, // Max radius of the asteroid belt.
-        particleMinRadius = 8, // Min of asteroid radius.
+        particleMinRadius = 17, // Min of asteroid radius.
         particleMaxRadius = 20; // Max of asteroid radius.
 
     const particle = getMesh(mesh).clone();
@@ -20,7 +20,7 @@ function newGizmo (name, mesh, material, distance, angle, elevation, awake, posi
     });
 
     particle.material = getMaterial(material).clone();
-    particle.material.map = WHS.TextureModule.load('assets/spider.png');
+    particle.material.map = getTexture(name);
 
     particle.data = {
         name: name,
