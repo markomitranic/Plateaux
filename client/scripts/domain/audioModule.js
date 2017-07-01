@@ -1,9 +1,9 @@
 const sound = new Howl({
     src: [
-        "/assets/audio/marko.ogg",
-        "/assets/audio/marko.m4a",
-        "/assets/audio/marko.mp3",
-        "/assets/audio/marko.ac3"
+        "/assets/audio/gizmo_sprite.ogg",
+        "/assets/audio/gizmo_sprite.m4a",
+        "/assets/audio/gizmo_sprite.mp3",
+        "/assets/audio/gizmo_sprite.ac3"
     ],
     preload: true,
     loop: true,
