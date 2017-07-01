@@ -59,6 +59,26 @@ $high: #EC0B43;
           background-size: cover;
           box-shadow: 0 0 10px 0px black;
         }
+        &::after {
+          display: block;
+          content: "";
+          -webkit-transform: rotateY(-19deg) rotateX(-25deg) rotateZ(-5deg) translateX(-7px);
+          transform: rotateY(-19deg) rotateX(-25deg) rotateZ(-5deg) translateX(-7px);
+          transition: all 0.4s cubic-bezier(0.16, 0.53, 0.15, 0.99) 0s;
+          background: #4a80b1;
+          background: rgba(255,255,255,0.1);
+          border-radius: 3px;
+          z-index: -2;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          background-position: center center;
+          background-size: cover;
+          box-shadow: 0 0 10px 0px black;
+          background-image: url("../assets/static.gif");
+        }
 
         &:hover {
           color: white;
