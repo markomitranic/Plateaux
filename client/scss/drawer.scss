@@ -1,3 +1,7 @@
+$low: #274690;
+$mid: #D6FFB7;
+$high: #EC0B43;
+
 #drawer {
   display: block;
   width: 100vw;
@@ -70,27 +74,49 @@
         }
 
         &.gizmo_1:before {
+          // Bulke Flowers
+          background-color: rgba($mid, 0.8);
           //background-image: url(http://i68.tinypic.com/9gelqd.jpg);
         }
         &.gizmo_2:before {
+          // Bass Eyes
+          background-color: rgba($low, 0.8);
         }
         &.gizmo_3:before {
+          // Ghost in the shell
+          background-color: rgba($mid, 0.8);
         }
         &.gizmo_4:before {
+          // Dali Eyes
+          background-color: rgba($low, 0.8);
         }
         &.gizmo_5:before {
+          // Drive
+          background-color: rgba($mid, 0.8);
         }
         &.gizmo_6:before {
+          // Lamp Spark
+          background-color: rgba($low, 0.8);
         }
         &.gizmo_7:before {
+          // Acid Hologram
+          background-color: rgba($high, 0.8);
         }
         &.gizmo_8:before {
+          // Totoro Rain
+          background-color: rgba($low, 0.8);
         }
         &.gizmo_9:before {
+          // Horses Wave
+          background-color: rgba($high, 0.8);
         }
         &.gizmo_10:before {
+          // Terrified
+          background-color: rgba($mid, 0.8);
         }
         &.gizmo_11:before {
+          // Akira
+          background-color: rgba($high, 0.8);
         }
       }
     }

@@ -39,7 +39,7 @@ function toggleCurtain () {
         }, 1000);
         setTimeout(() => {
             tutorial.style.display = 'none';
-        }, 20000);
+        }, 30000);
     }
 }
 

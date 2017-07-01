@@ -149,110 +149,121 @@ function generateWorld() {
 
     const response = { status: "populateWorld", gizmoArray: [] };
 
+    // Bulke Flowers
     response.gizmoArray.push({
         name: 'gizmo_1',
         mesh: 'dodecahedron',
-        material: 1,
+        material: "mid",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: true
     });
 
+    // Bass Eyes
     response.gizmoArray.push({
         name: 'gizmo_2',
         mesh: 'box',
-        material: 2,
+        material: "low",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: false
     });
 
+    // Ghost in the shell
     response.gizmoArray.push({
         name: 'gizmo_3',
         mesh: 'cylinder',
-        material: 3,
+        material: "mid",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: true
     });
 
+    // Dali Eyes
     response.gizmoArray.push({
         name: 'gizmo_4',
         mesh: 'sphere',
-        material: 0,
+        material: "low",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: false
     });
 
+    // Drive
     response.gizmoArray.push({
         name: 'gizmo_5',
         mesh: 'cylinder',
-        material: 2,
+        material: "mid",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: false
     });
 
+    // Lamp Spark
     response.gizmoArray.push({
         name: 'gizmo_6',
         mesh: 'dodecahedron',
-        material: 2,
+        material: "low",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
-        awake: false
+        awake: true
     });
 
+    // Acid Hologram
     response.gizmoArray.push({
         name: 'gizmo_7',
         mesh: 'box',
-        material: 3,
+        material: "high",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: false
     });
 
+    // Totoro Rain
     response.gizmoArray.push({
         name: 'gizmo_8',
         mesh: 'dodecahedron',
-        material: 2,
+        material: "low",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: false
     });
 
+    // Horses Wave
     response.gizmoArray.push({
         name: 'gizmo_9',
         mesh: 'cylinder',
-        material: 1,
+        material: "high",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: false
     });
 
+    // Terrified
     response.gizmoArray.push({
         name: 'gizmo_10',
         mesh: 'sphere',
-        material: 0,
+        material: "mid",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),
         awake: false
     });
 
+    // Akira
     response.gizmoArray.push({
         name: 'gizmo_11',
         mesh: 'sphere',
-        material: 0,
+        material: "high",
         distance: distance(),
         angle: angle(),
         elevation: elevation(),

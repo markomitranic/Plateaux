@@ -5,6 +5,12 @@ const mat = [
     new THREE.MeshPhongMaterial({color: 0xfaff70, shading: THREE.FlatShading})
 ];
 
+const gizmoMat = {
+    low: new THREE.MeshPhongMaterial({color: 0x274690, shading: THREE.FlatShading}),
+    mid: new THREE.MeshPhongMaterial({color: 0xD6FFB7, shading: THREE.FlatShading}),
+    high: new THREE.MeshPhongMaterial({color: 0xEC0B43, shading: THREE.FlatShading})
+};
+
 const s1 = new WHS.Dodecahedron({
     geometry: {
         buffer: true,
@@ -77,8 +83,8 @@ const s4 = new WHS.Sphere({
     })
 });
 
-function getMaterial(materialNumber) {
-    return mat[materialNumber];
+function getMaterial(materialType) {
+    return gizmoMat[materialType];
 }
 
 function getMesh(meshName) {
