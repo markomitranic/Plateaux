@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
-
 const server = new WebSocket.Server({ port: 3000 });
+
+console.log('Spinning up Plateaux Server.');
 
 server.on('connection', function connection(client) {
     client.gs = gs();

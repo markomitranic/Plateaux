@@ -4,6 +4,7 @@ Plateaux is a state of the art musical collaboration mechanism.
 Pull requests are welcome.
 
 Hosted Live: http://plateaux.space/
+Thesis: https://medium.com/homullus/multi-directional-real-time-creative-collaboration-platform-based-on-websockets-c2636e736cd1
 
 Multiple performers collaborate in a real-time, virtual, three-dimensional music jam session, with a goal of creating a non-stop, ever-changing and looping tune.
 It feels like a game - In the top menu, you are presented with a selection of melodies asleep. By selecting any one, you will spawn a three-dimensional Gizmo which can be controlled by any other performer.
@@ -63,7 +64,6 @@ node plateaux.js
 ```
 ## Known issues & TODOs
 - Should implement icon textures as visual guidelines for Gizmo recognition (materials and meshes also).
-- Should publish major thesis to Medium and link it here for reference.
 
 ## Future Prospects
 - Mobile version of the project. Maybe even a Cordova Application?
