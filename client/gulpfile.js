@@ -72,3 +72,5 @@ gulp.task('watch', ['sass', 'domainScripts', 'vendorScripts'], function (){
     gulp.watch('scripts/vendor/**/*.js', ['vendorScripts']);
 });
 
+gulp.task('build', ['sass', 'domainScripts', 'vendorScripts']);
+

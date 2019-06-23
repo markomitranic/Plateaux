@@ -11,7 +11,7 @@ services:
     volumes:
       - ./../client/app/:/application:ro
     ports:
-      - ${HTTP_PORT}:443
+      - ${HTTP_PORT}:8080
     networks:
       - plateaux
 
@@ -22,7 +22,7 @@ services:
     restart: always
     entrypoint: /application/entrypoint.sh
     volumes:
-      - ./../server:/application/server:cached
+      - ./../server:/application/server:rw
     networks:
       - plateaux
 
@@ -34,7 +34,7 @@ services:
     restart: always
     entrypoint: /application/entrypoint.sh
     volumes:
-      - ./../client:/application/client:cached
+      - ./../client:/application/client:rw
     networks:
       - plateaux
 
