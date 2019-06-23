@@ -1,4 +1,10 @@
-const socket = new WebSocket('ws://'+window.location.host+'/server');
+if (location.protocol === 'http:') {
+    let wsProtocol = "ws:";
+} else {
+    let wsProtocol = "wss:";
+}
+
+const socket = new WebSocket(wsProtocol + '//' + window.location.host + '/server');
 
 socket.addEventListener('error', (message) => {
     flashMessage('error', 'Error connecting to server!');
