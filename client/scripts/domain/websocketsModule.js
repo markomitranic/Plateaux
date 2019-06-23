@@ -1,7 +1,7 @@
+let wsProtocol = "wss:";
+
 if (location.protocol === 'http:') {
-    let wsProtocol = "ws:";
-} else {
-    let wsProtocol = "wss:";
+    wsProtocol = "ws:";
 }
 
 const socket = new WebSocket(wsProtocol + '//' + window.location.host + '/server');
