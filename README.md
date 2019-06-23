@@ -23,44 +23,14 @@ In short,
 - [websockets/ws](https://github.com/websockets/ws) was used for websocket control on the Node server side.
 
 ## Installation
-Application consists of two segments, server and a client. At this point, they are divided, and the client is served over standard nginx or apache. As Apache does not play well with Node on the same domain, at least not on UNIX systems, and as we do not want to run it as root, i am attaching a simple nginx server block below:
-```
-server {
-        listen *:80;
-        server_name plateaux.space;
-        root /var/www/plateaux/client/app;
-
-        error_log /usr/local/var/log/nginx/error-plateaux.dev.log;
-        access_log /usr/local/var/log/nginx/access-plateaux.dev.log;
-
-        index index.php index.html index.htm index.nginx-debian.html;
-
-        location / {
-                try_files $uri $uri/ /index.php?$args;
-                autoindex on;
-        }
-
-        location /server {
-                proxy_pass http://127.0.0.1:3000/;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection 'upgrade';
-                proxy_set_header Host $host;
-                proxy_cache_bypass $http_upgrade;
-        }
-}
-```
-Apart from that, everything should go smoothly, server should be mapped to run at `/server` URL, and is run by direct node call or pm2 monitor.
-
-Generated front end scripts are not tracked and must be built with gulp. I have set up a custom `gulp watch` task to compile scripts.
+The application is served over 3 Docker containers. Node, Build and Http Server.
  
 So, in short:
 ```
-cd client
-gulp watch
+cd Docker
+./deploy.sh
 
-cd server
-node plateaux.js
+http://plateaux.local
 ```
 ## Known issues & TODOs
 - Should implement icon textures as visual guidelines for Gizmo recognition (materials and meshes also).
