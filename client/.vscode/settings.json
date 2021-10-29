@@ -1,0 +1,9 @@
+{
+    "editor.formatOnSave": true,
+    "files.watcherExclude": {
+        "**/node_modules/**": true,
+    },
+    "search.exclude": {
+        "**/node_modules/**": true,
+    },
+}

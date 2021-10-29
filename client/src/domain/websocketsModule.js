@@ -4,7 +4,7 @@ if (location.protocol === 'http:') {
     wsProtocol = "ws:";
 }
 
-const socket = new WebSocket(wsProtocol + '//' + window.location.host + '/server');
+const socket = new WebSocket(wsProtocol + '//' + window.location.host + ':3000/server');
 
 socket.addEventListener('error', (message) => {
     flashMessage('error', 'Error connecting to server!');
@@ -48,7 +48,7 @@ function socketEmit(emitType, data) {
     }
 }
 
-function eventHandler (data) {
+function eventHandler(data) {
     let gizmo = gizmos.children[findGizmoKey(data.name)];
 
     switch (data.status) {
@@ -86,7 +86,7 @@ function eventHandler (data) {
 }
 
 class GizmoMessage {
-    constructor (gizmo) {
+    constructor(gizmo) {
         this.angle = gizmo.angle;
         this.distance = gizmo.distance;
         this.elevation = gizmo.elevation;

@@ -1,0 +1,30 @@
+services:
+
+  server:
+    container_name: plateaux_server
+    build:
+      context: ./server
+    restart: always
+    # command: ["tail", "-f", "/dev/null"]
+    ports:
+      - 3000:3000
+    volumes:
+      - ./server:/app
+    networks:
+      - plateaux
+
+  client:
+    container_name: plateaux_client
+    build:
+      context: ./client
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./client:/app
+    networks:
+      - plateaux
+
+networks:
+  plateaux:
+    driver: bridge

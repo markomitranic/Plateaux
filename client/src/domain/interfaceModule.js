@@ -21,7 +21,7 @@ muteButton.addEventListener('click', (e) => {
 enterButton.addEventListener('click', toggleCurtain);
 infoButton.addEventListener('click', toggleCurtain);
 
-function toggleCurtain () {
+function toggleCurtain() {
     if (curtain.classList.contains('fadeOut')) {
         curtain.style.display = 'block';
         tutorial.style.display = 'block';
@@ -51,6 +51,6 @@ if (window.innerWidth < 800) {
     throw new Error("Stopping JS execution because te page is run on a mobile device!");
 }
 
-function addToClientsInGs (newNumber) {
+function addToClientsInGs(newNumber) {
     gsButton.innerHTML = parseInt(gsButton.innerHTML) + newNumber;
 }
